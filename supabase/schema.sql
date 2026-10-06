@@ -9,6 +9,9 @@ create table if not exists public.progresso (
 
 alter table public.progresso enable row level security;
 
+-- Permissão para quem está logado (sem isso, o Data API responde "permission denied").
+grant select, insert, update on public.progresso to authenticated;
+
 create policy "ler o proprio progresso"
   on public.progresso for select
   using (auth.uid() = user_id);
