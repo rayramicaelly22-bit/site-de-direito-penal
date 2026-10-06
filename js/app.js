@@ -976,9 +976,15 @@ function render() {
   document.querySelectorAll(".abas a").forEach((a) => {
     a.classList.toggle("ativa", a.dataset.aba === aba);
   });
-  app.innerHTML = html();
-  window.scrollTo(0, 0);
-  ligarEventos();
+  try {
+    app.innerHTML = html();
+    window.scrollTo(0, 0);
+    ligarEventos();
+  } catch (erro) {
+    // Se uma página falhar, mostra o motivo na tela em vez de deixar tudo em branco.
+    console.error(erro);
+    app.innerHTML = `<h1>Não foi possível abrir esta página</h1><p class="aviso">Motivo: ${esc(erro.message)}</p><p>Tire uma captura de tela desta mensagem e envie para quem cuida do site.</p>`;
+  }
 }
 
 function ligarEventos() {
