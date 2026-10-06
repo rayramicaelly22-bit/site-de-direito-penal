@@ -450,6 +450,67 @@ function telaRevisao() {
 }
 
 let ultimaEnsaio = -1;
+let ensaioAtual = null;
+
+// Palavras comuns que não indicam um ponto da resposta.
+const PALAVRAS_COMUNS = new Set([
+  "para", "pela", "pelo", "como", "quando", "essa", "esse", "esta", "este", "isso", "sobre",
+  "entre", "pode", "deve", "seja", "sendo", "sem", "com", "uma", "umas", "dos", "das", "nos",
+  "nas", "que", "qual", "quais", "seus", "suas", "ainda", "mais", "menos", "porque", "então",
+  "tambem", "desde", "onde", "cada", "ser", "ter", "fato", "caso", "codigo", "penal", "processo",
+  "processual", "artigo", "conforme", "outro", "outra", "mesma", "mesmo", "apenas", "quem"
+]);
+
+function semAcento(texto) {
+  return texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+// Pontos principais da resposta certa: palavras longas e sem as comuns.
+function pontosDaResposta(texto) {
+  const palavras = semAcento(texto).split(/[^a-z0-9]+/).filter((p) => p.length >= 6 && !PALAVRAS_COMUNS.has(p));
+  return [...new Set(palavras)];
+}
+
+// Compara a resposta da pessoa com a resposta certa, por palavras-chave.
+function compararResposta(resposta, modelo) {
+  const pontos = pontosDaResposta(modelo);
+  const texto = semAcento(resposta);
+  const citados = pontos.filter((p) => texto.includes(p.slice(0, 6)));
+  const faltaram = pontos.filter((p) => !citados.includes(p));
+  const percentual = pontos.length ? Math.round((citados.length / pontos.length) * 100) : 0;
+  return { percentual, citados, faltaram };
+}
+
+function resultadoComparacao(resposta, modelo) {
+  if (!resposta.trim()) {
+    return `<p class="aviso">Escreva sua resposta antes de comparar.</p>`;
+  }
+  const { percentual, citados, faltaram } = compararResposta(resposta, modelo);
+  const mensagem = percentual >= 70
+    ? "Muito bem: você cobriu a maior parte dos pontos principais."
+    : percentual >= 40
+      ? "Bom começo: faltaram alguns pontos. Veja a lista abaixo."
+      : "Revise esta resposta e tente de novo, em voz alta.";
+
+  return `
+    <div class="card">
+      <h3>Comparação</h3>
+      <p><strong>${percentual}%</strong> dos pontos principais apareceram na sua resposta. ${mensagem}</p>
+      <p class="suave">A comparação é automática, por palavras-chave. Leia a resposta certa para entender o raciocínio completo.</p>
+      <div class="linha" style="align-items: stretch;">
+        <div class="card borda" style="flex: 1 1 280px;">
+          <h3>O que você respondeu</h3>
+          <p>${esc(resposta).replace(/\n/g, "<br>")}</p>
+        </div>
+        <div class="card borda" style="flex: 1 1 280px;">
+          <h3>Resposta certa</h3>
+          <p>${marcar(modelo)}</p>
+        </div>
+      </div>
+      ${citados.length ? `<p><strong>Você citou:</strong> ${citados.map(esc).join(", ")}.</p>` : ""}
+      ${faltaram.length ? `<p class="aviso">Faltou citar: ${faltaram.map(esc).join(", ")}.</p>` : ""}
+    </div>`;
+}
 function sortearEnsaio() {
   const todas = FACULDADE().flatMap((aula) => aula.questoes.map((q) => ({ ...q, aula: aula.titulo })));
   if (todas.length === 0) return null;
@@ -464,6 +525,7 @@ function sortearEnsaio() {
 function telaEnsaio() {
   const q = sortearEnsaio();
   if (!q) return "<p>Ainda não há perguntas cadastradas.</p>";
+  ensaioAtual = q;
   return `
     <h1>Ensaio oral</h1>
     ${bloco("faculdade")}
@@ -471,10 +533,14 @@ function telaEnsaio() {
     <div class="card">
       <p class="suave">${esc(q.aula)}</p>
       <h2 style="margin-top: 0">${esc(q.pergunta)}</h2>
-      <div class="linha">
+      <label for="resposta-aluno">Sua resposta (escreva ou digite o que você falou)</label>
+      <textarea id="resposta-aluno" rows="6" style="width: 100%; font: inherit; padding: 10px; border-radius: 8px; border: 1px solid var(--borda); background: var(--fundo); color: var(--texto);" placeholder="Responda como se estivesse na prova oral."></textarea>
+      <div class="linha" style="margin-top: 12px;">
+        <button id="btn-comparar">Comparar com a resposta certa</button>
         <button id="btn-modelo" class="secundario">Ver modelo</button>
-        <button id="btn-outra">Outra pergunta</button>
+        <button id="btn-outra" class="secundario">Outra pergunta</button>
       </div>
+      <div id="comparacao"></div>
       <div class="resposta" id="modelo"><p>${marcar(q.modelo)}</p></div>
     </div>
   `;
@@ -682,6 +748,14 @@ function ligarEventos() {
 
   const btnOutra = document.getElementById("btn-outra");
   if (btnOutra) btnOutra.addEventListener("click", render);
+
+  const btnComparar = document.getElementById("btn-comparar");
+  if (btnComparar && ensaioAtual) {
+    btnComparar.addEventListener("click", () => {
+      const resposta = document.getElementById("resposta-aluno").value;
+      document.getElementById("comparacao").innerHTML = resultadoComparacao(resposta, ensaioAtual.modelo);
+    });
+  }
 
   document.querySelectorAll(".btn-status").forEach((botao) => {
     botao.addEventListener("click", () => {
