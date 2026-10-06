@@ -122,6 +122,35 @@ h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
   border: 1px solid var(--borda);
 }
 
+/* Menu de três riscos (☰) */
+.topo-botoes { display: flex; gap: 8px; align-items: center; }
+.menu-lateral {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(330px, 90vw);
+  background: var(--papel);
+  border-left: 4px solid var(--vermelho);
+  padding: 16px;
+  overflow-y: auto;
+  z-index: 30;
+  box-shadow: -6px 0 20px rgba(0, 0, 0, 0.2);
+}
+.menu-lateral[hidden], .menu-fundo[hidden] { display: none; }
+.menu-fundo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 25;
+}
+.menu-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.menu-links { flex-direction: column; overflow: visible; margin-top: 4px; }
+.menu-links a { padding: 10px 8px; border-bottom: none; border-left: 4px solid transparent; }
+.menu-links a.ativa { border-left-color: var(--amarelo); border-bottom-color: transparent; }
+.menu-conta { margin-top: 20px; border-top: 1px solid var(--borda); padding-top: 12px; }
+.menu-conta h3 { margin-top: 0; }
+
 /* Tela de login (sem cabeçalho nem abas) */
 body.entrada-ativa .topo,
 body.entrada-ativa .rodape { display: none; }

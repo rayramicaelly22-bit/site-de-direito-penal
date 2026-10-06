@@ -199,6 +199,7 @@ function telaInicio() {
     <div class="linha">
       <a class="botao" href="#/trilha">Montar minha trilha</a>
       <a class="botao secundario" href="#/nivel">Descubra seu nível</a>
+      <a class="botao secundario" href="#/simulado">Simulado do dia</a>
       <a class="botao secundario" href="#/faculdade">Ver conteúdo da faculdade</a>
     </div>
   `;
@@ -642,6 +643,106 @@ function importarProgresso(arquivo) {
   leitor.readAsText(arquivo);
 }
 
+// ---------- Simulado diário ----------
+
+let simuladoEstado = { fase: "inicio", perguntas: [], respostas: [] };
+
+function simuladosFeitos() {
+  return LS.get("areta-simulados", []);
+}
+
+function simuladosDeHoje() {
+  const hoje = chaveData(new Date());
+  return simuladosFeitos().filter((s) => s.data === hoje);
+}
+
+// Quantos dias seguidos, até hoje, tiveram pelo menos um simulado.
+function sequenciaSimulados() {
+  const dias = new Set(simuladosFeitos().map((s) => s.data));
+  let total = 0;
+  const dia = new Date();
+  while (dias.has(chaveData(dia))) {
+    total += 1;
+    dia.setDate(dia.getDate() - 1);
+  }
+  return total;
+}
+
+// Sorteia 5 perguntas que ainda não apareceram. Usa as aulas estudadas, se houver perguntas suficientes.
+function sortearSimulado() {
+  const estudadas = aulasFeitas();
+  let pool = BANCO_SIMULADO.filter((q) => estudadas.includes(q.aula));
+  if (pool.length < 5) pool = BANCO_SIMULADO;
+
+  let usados = LS.get("areta-simulado-usados", []);
+  let disponiveis = pool.filter((q) => !usados.includes(q.id));
+  if (disponiveis.length < 5) {
+    usados = [];
+    disponiveis = pool;
+  }
+  const escolhidas = embaralhar(disponiveis).slice(0, 5);
+  LS.set("areta-simulado-usados", [...usados, ...escolhidas.map((q) => q.id)]);
+  return escolhidas;
+}
+
+function comecarSimulado() {
+  simuladoEstado = { fase: "quiz", perguntas: sortearSimulado(), respostas: [] };
+}
+
+function telaSimulado() {
+  if (simuladoEstado.fase === "quiz") {
+    const cards = simuladoEstado.perguntas.map((q, i) => `
+      <div class="card borda">
+        <strong>${i + 1}. ${esc(q.pergunta)}</strong>
+        <div style="margin-top: 8px;">
+          ${q.alternativas.map((alt, j) => `
+            <label class="opcao"><input type="radio" name="sim-${i}" value="${j}"> ${esc(alt)}</label>`).join("")}
+        </div>
+      </div>`).join("");
+    return `
+      <h1>Simulado</h1>
+      ${bloco("faculdade")}
+      <p>5 perguntas sobre o que você estudou. Responda sem consultar.</p>
+      ${cards}
+      <button id="btn-sim-corrigir">Corrigir</button>`;
+  }
+
+  if (simuladoEstado.fase === "resultado") {
+    const acertos = simuladoEstado.respostas.filter((r) => r.acertou).length;
+    const total = simuladoEstado.respostas.length;
+    const detalhes = simuladoEstado.respostas.map((r, i) => `
+      <div class="card borda">
+        <strong>${i + 1}. ${esc(r.pergunta)}</strong>
+        <p>${r.acertou ? "Você acertou." : `Você marcou: ${esc(r.escolhida === null ? "nada" : r.alternativas[r.escolhida])}.`}</p>
+        <p>Resposta certa: <strong>${esc(r.alternativas[r.correta])}</strong></p>
+        <p class="suave">${esc(r.explicacao)}</p>
+      </div>`).join("");
+    return `
+      <h1>Resultado: ${acertos}/${total}</h1>
+      ${detalhes}
+      <div class="linha">
+        <button id="btn-sim-novo">Fazer outro simulado</button>
+        <a class="botao secundario" href="#/inicio">Voltar ao início</a>
+      </div>`;
+  }
+
+  const hojeFeitos = simuladosDeHoje();
+  const ultimos = simuladosFeitos().slice(-7).reverse()
+    .map((s) => `<li>${esc(s.data)}: ${s.acertos}/${s.total}</li>`).join("");
+  return `
+    <h1>Simulado do dia</h1>
+    ${bloco("faculdade")}
+    <div class="card">
+      <p>${hojeFeitos.length
+        ? `<strong>Hoje:</strong> simulado feito (${hojeFeitos[0].acertos}/${hojeFeitos[0].total}). Você pode fazer outro para treinar mais.`
+        : "<strong>Hoje:</strong> ainda não foi feito. Faça pelo menos 1 simulado por dia."}</p>
+      <p>Dias seguidos com simulado: <strong>${sequenciaSimulados()}</strong></p>
+    </div>
+    <p>As perguntas são sorteadas do que você já estudou e não se repetem até o banco inteiro ser usado.</p>
+    <button id="btn-sim-comecar">${hojeFeitos.length ? "Fazer outro simulado" : "Fazer simulado de hoje"}</button>
+    ${ultimos ? `<h2>Últimos resultados</h2><ul>${ultimos}</ul>` : ""}`;
+}
+
 // ---------- Teste de nível ----------
 
 let nivelEstado = { fase: "inicio", perguntas: [], respostas: [] };
@@ -744,6 +845,7 @@ function rota() {
   if (aba === "complementar") return { aba, html: telaComplementar };
   if (aba === "progresso") return { aba, html: telaProgresso };
   if (aba === "nivel") return { aba: null, html: telaNivel };
+  if (aba === "simulado") return { aba: "simulado", html: telaSimulado };
   if (aba === "aulas" && resto.length) {
     const aula = AULAS.find((a) => a.id === resto[0]);
     const secao = aula ? aula.secao : null;
@@ -754,6 +856,38 @@ function rota() {
   if (aba === "ensaio") return { aba, html: telaEnsaio };
   if (aba === "jurisprudencia") return { aba: "faculdade", html: () => telaJurisprudencia(resto[0]) };
   return { aba: null, html: telaNaoEncontrada };
+}
+
+// Seção "Minha conta" dentro do menu: sair e apagar conta.
+function atualizarMenuConta() {
+  const area = document.getElementById("menu-conta");
+  if (!area) return;
+  if (!nuvemDisponivel()) {
+    area.innerHTML = `<h3>Minha conta</h3><p class="suave">A sincronização não está configurada. O progresso fica só neste aparelho.</p>`;
+    return;
+  }
+  if (!nuvem.sessao) {
+    area.innerHTML = `<h3>Minha conta</h3><p class="suave">Você não está conectado.</p>`;
+    return;
+  }
+  const anonimo = Boolean(nuvem.sessao.user.is_anonymous);
+  area.innerHTML = `
+    <h3>Minha conta</h3>
+    <p><strong>Acesso:</strong> ${anonimo ? "sem e-mail (neste aparelho)" : esc(nuvem.sessao.user.email)}</p>
+    <p class="suave pequeno">O progresso fica salvo na nuvem nesta conta. Você pode sair ou apagar a conta e todos os dados quando quiser.</p>
+    <div class="linha">
+      <button class="secundario" id="btn-menu-sair">Sair da conta</button>
+    </div>
+    <div class="linha" style="margin-top: 12px;">
+      <button id="btn-menu-apagar">Apagar minha conta</button>
+    </div>
+    <p id="msg-menu" class="suave"></p>`;
+}
+
+function abrirMenu(aberto) {
+  document.getElementById("menu-lateral").hidden = !aberto;
+  document.getElementById("menu-fundo").hidden = !aberto;
+  document.getElementById("btn-menu").setAttribute("aria-expanded", String(aberto));
 }
 
 // Com a nuvem configurada, o site só abre depois de entrar (com ou sem e-mail).
@@ -790,6 +924,7 @@ function telaEntrada() {
 function render() {
   // Sem login, a página mostra só a tela de entrada (sem abas nem rodapé).
   document.body.classList.toggle("entrada-ativa", precisaEntrar() || (nuvemDisponivel() && !nuvem.pronto));
+  atualizarMenuConta();
   if (precisaEntrar()) {
     document.querySelectorAll(".abas a").forEach((a) => a.classList.remove("ativa"));
     app.innerHTML = telaEntrada();
@@ -853,6 +988,47 @@ function ligarEventos() {
 
   const btnOutra = document.getElementById("btn-outra");
   if (btnOutra) btnOutra.addEventListener("click", render);
+
+  const btnSimComecar = document.getElementById("btn-sim-comecar");
+  if (btnSimComecar) {
+    btnSimComecar.addEventListener("click", () => {
+      comecarSimulado();
+      render();
+    });
+  }
+
+  const btnSimCorrigir = document.getElementById("btn-sim-corrigir");
+  if (btnSimCorrigir) {
+    btnSimCorrigir.addEventListener("click", () => {
+      simuladoEstado.respostas = simuladoEstado.perguntas.map((q, i) => {
+        const marcada = document.querySelector(`input[name="sim-${i}"]:checked`);
+        const escolhida = marcada ? Number(marcada.value) : null;
+        return {
+          pergunta: q.pergunta,
+          alternativas: q.alternativas,
+          correta: q.correta,
+          explicacao: q.explicacao,
+          escolhida,
+          acertou: escolhida === q.correta
+        };
+      });
+      simuladoEstado.fase = "resultado";
+      const acertos = simuladoEstado.respostas.filter((r) => r.acertou).length;
+      LS.set("areta-simulados", [
+        ...simuladosFeitos(),
+        { data: chaveData(new Date()), acertos, total: simuladoEstado.respostas.length }
+      ]);
+      render();
+    });
+  }
+
+  const btnSimNovo = document.getElementById("btn-sim-novo");
+  if (btnSimNovo) {
+    btnSimNovo.addEventListener("click", () => {
+      comecarSimulado();
+      render();
+    });
+  }
 
   const btnNivelComecar = document.getElementById("btn-nivel-comecar");
   if (btnNivelComecar) {
@@ -981,6 +1157,35 @@ function ligarEventos() {
     });
   }
 
+  const btnMenuSair = document.getElementById("btn-menu-sair");
+  if (btnMenuSair) {
+    btnMenuSair.addEventListener("click", async () => {
+      const anonimo = Boolean(nuvem.sessao && nuvem.sessao.user.is_anonymous);
+      if (anonimo && !confirm("Você está sem e-mail. Ao sair, não será possível voltar a este progresso. Deseja sair mesmo assim?")) return;
+      await sairNuvem();
+      abrirMenu(false);
+      render();
+    });
+  }
+
+  const btnMenuApagar = document.getElementById("btn-menu-apagar");
+  if (btnMenuApagar) {
+    btnMenuApagar.addEventListener("click", async () => {
+      if (!confirm("Apagar a conta e todo o progresso salvo na nuvem? Esta ação não pode ser desfeita. O progresso deste aparelho também será apagado.")) return;
+      const erro = await apagarConta();
+      if (erro) {
+        document.getElementById("msg-menu").textContent = erro;
+        return;
+      }
+      LS.set(PROG_KEY, progressoVazio());
+      LS.set("areta-trilha", null);
+      LS.set("areta-nivel", null);
+      LS.set("areta-nivel-pulado", null);
+      abrirMenu(false);
+      render();
+    });
+  }
+
   const btnExportar = document.getElementById("btn-exportar");
   if (btnExportar) btnExportar.addEventListener("click", exportarProgresso);
 
@@ -1039,7 +1244,16 @@ document.addEventListener("keydown", (evento) => {
 
 window.addEventListener("hashchange", () => {
   popover.hidden = true;
+  abrirMenu(false);
   render();
+});
+
+// Menu de três riscos: abre, fecha pelo botão, pelo fundo, e ao escolher uma seção.
+document.getElementById("btn-menu").addEventListener("click", () => abrirMenu(true));
+document.getElementById("btn-fechar-menu").addEventListener("click", () => abrirMenu(false));
+document.getElementById("menu-fundo").addEventListener("click", () => abrirMenu(false));
+document.querySelector(".menu-links").addEventListener("click", (evento) => {
+  if (evento.target.closest("a")) abrirMenu(false);
 });
 
 if (!location.hash) location.hash = "#/inicio";

@@ -26,9 +26,19 @@
           <small>Estudo Penal</small>
         </span>
       </a>
-      <button class="secundario tema" id="btn-tema" aria-label="Alternar entre tema claro e escuro">Tema escuro</button>
+      <div class="topo-botoes">
+        <button class="secundario tema" id="btn-tema" aria-label="Alternar entre tema claro e escuro">Tema escuro</button>
+        <button class="secundario tema" id="btn-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">☰</button>
+      </div>
     </div>
-    <nav class="abas" aria-label="Seções">
+  </header>
+
+  <aside id="menu-lateral" class="menu-lateral" hidden>
+    <div class="menu-topo">
+      <strong>Menu</strong>
+      <button class="secundario tema" id="btn-fechar-menu" aria-label="Fechar menu">Fechar ✕</button>
+    </div>
+    <nav class="abas menu-links" aria-label="Seções">
       <a href="#/inicio" data-aba="inicio">Início</a>
       <a href="#/faculdade" data-aba="faculdade">Faculdade</a>
       <a href="#/complementar" data-aba="complementar">Complementar</a>
@@ -37,8 +47,12 @@
       <a href="#/glossario" data-aba="glossario">Glossário</a>
       <a href="#/revisao" data-aba="revisao">Revisão</a>
       <a href="#/ensaio" data-aba="ensaio">Ensaio oral</a>
+      <a href="#/simulado" data-aba="simulado">Simulado do dia</a>
+      <a href="#/nivel" data-aba="nivel">Descubra seu nível</a>
     </nav>
-  </header>
+    <section class="menu-conta" id="menu-conta"></section>
+  </aside>
+  <div id="menu-fundo" class="menu-fundo" hidden></div>
 
   <main id="app" class="conteudo"></main>
 
@@ -48,12 +62,15 @@
     ARETA CRIMINALIS · Material de estudo. Confira sempre o texto atual do Código Penal, da Constituição e as decisões do STF/STJ no site oficial.
   </footer>
 
+  <script src="js/complementar.js"></script>
+  <script src="js/faculdade.js"></script>
   <script src="js/conteudo.js"></script>
   <script src="js/glossario.js"></script>
   <script src="js/trilha.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/sync.js"></script>
+  <script src="js/simulado.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
