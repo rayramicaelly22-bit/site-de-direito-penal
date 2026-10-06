@@ -76,5 +76,57 @@ const GLOSSARIO = {
   "flagrante": {
     termo: "Flagrante",
     def: "Situação em que o autor é surpreendido cometendo a infração, ou logo depois (art. 302 do CPP)."
+  },
+  "prisao": {
+    termo: "Prisão",
+    def: "Privação da liberdade de locomoção. Pode ser penal (condenação definitiva), cautelar (antes da condenação definitiva), civil, administrativa ou militar."
+  },
+  "prisao-preventiva": {
+    termo: "Prisão preventiva",
+    def: "Prisão cautelar decretada pelo juiz, com prova da existência do crime, indícios suficientes de autoria e um fundamento legal (art. 312 do CPP)."
+  },
+  "medida-cautelar": {
+    termo: "Medida cautelar diversa da prisão",
+    def: "Medida menos grave que a prisão, prevista no art. 319 do CPP, como comparecimento periódico em juízo ou proibição de contato com alguém."
+  },
+  "fianca": {
+    termo: "Fiança",
+    def: "Garantia em dinheiro para responder ao processo em liberdade. O valor depende da pena e da situação do acusado (arts. 321 a 350 do CPP)."
+  },
+  "processo": {
+    termo: "Processo",
+    def: "Conjunto de atos processuais, desde o oferecimento da peça acusatória até o provimento final."
+  },
+  "procedimento": {
+    termo: "Procedimento",
+    def: "Forma como o processo se desenvolve, com fases e ritos definidos conforme a pena ou a natureza do crime."
+  },
+  "rito-ordinario": {
+    termo: "Procedimento comum ordinário",
+    def: "Rito usado para crimes com pena máxima igual ou superior a 4 anos, quando não há rito especial."
+  },
+  "rejeicao-denuncia": {
+    termo: "Rejeição da denúncia",
+    def: "Decisão do juiz que não recebe a denúncia por inépcia, falta de pressuposto ou condição da ação, ou falta de justa causa (art. 395 do CPP)."
+  },
+  "pressupostos-processuais": {
+    termo: "Pressupostos processuais",
+    def: "Requisitos para o processo existir e ser válido: peça acusatória, juiz, capacidade de ser parte e competência, entre outros."
+  },
+  "justa-causa": {
+    termo: "Justa causa",
+    def: "Indícios mínimos de autoria e prova da materialidade do crime para a ação penal ser iniciada. Sua ausência leva à rejeição da denúncia."
+  },
+  "resposta-acusacao": {
+    termo: "Resposta à acusação",
+    def: "Manifestação escrita da defesa após a citação, no prazo de 10 dias (art. 396-A do CPP). Pode arguir preliminares e arrolar testemunhas."
+  },
+  "revelia": {
+    termo: "Revelia",
+    def: "Situação em que o acusado não responde à acusação. O processo segue sem a sua presença, mas não há presunção de veracidade dos fatos."
+  },
+  "rese": {
+    termo: "RESE (recurso em sentido estrito)",
+    def: "Recurso previsto no art. 581 do CPP, cabível em hipóteses específicas, como a decisão que rejeita a denúncia (inciso I). Prazo de 5 dias."
   }
 };

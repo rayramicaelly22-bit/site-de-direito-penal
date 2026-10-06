@@ -294,6 +294,7 @@ const AULAS = [
         titulo: "Causas de exclusão da culpabilidade",
         paragrafos: [
           "Inimputabilidade: menoridade (art. 27) e doença mental ou desenvolvimento mental incompleto ou retardado, quando a pessoa não podia entender o fato (art. 26).",
+          "Semi-imputabilidade: se a capacidade estava só parcialmente comprometida, o juiz pode reduzir a pena de um a dois terços (art. 26, parágrafo único).",
           "Erro de proibição inevitável (art. 21).",
           "Coação moral irresistível e obediência hierárquica não manifestamente ilegal (art. 22)."
         ]
@@ -371,6 +372,452 @@ const AULAS = [
       {
         pergunta: "Por que a cogitação não é punida no Direito Penal brasileiro?",
         modelo: "Porque o direito penal de fato pune conduta exteriorizada que lesa ou ameaça bem jurídico. Pensamento isolado não atinge bem jurídico, e a punição exigiria controle sobre a mente, o que é vedado."
+      }
+    ]
+  },
+  {
+    id: "aula-08",
+    titulo: "Prisão: conceito e espécies",
+    horas: 2,
+    resumo: "Prisão é a privação da liberdade de locomoção. Ela pode ser penal, cautelar, civil, administrativa ou militar.",
+    simples: [
+      "A [[prisao]] é qualquer privação da liberdade de ir e vir. A regra é que ela só ocorre por ordem judicial ou em flagrante delito (art. 5º, LXI, da CF).",
+      "Quanto ao momento, a prisão é penal quando decorre de sentença condenatória transitada em julgado, e cautelar quando é decretada antes disso (preventiva, temporária ou em flagrante).",
+      "Há também prisões de natureza civil (devedor de alimentos), administrativa e militar. A prisão do depositário infiel foi afastada pelo STF, e a administrativa não é admitida como forma de punição."
+    ],
+    crianca: "Prender alguém é tirar a pessoa do lugar onde ela quer estar. A lei só permite isso em situações bem específicas: quando um juiz manda, quando a pessoa é pega no momento do erro, ou quando o caso é de pena já decidida. Tudo fora disso é proibido.",
+    secoes: [
+      {
+        titulo: "Detração",
+        paragrafos: [
+          "O tempo de prisão provisória (cautelar) é descontado da pena definitiva (art. 42 do CP). Exemplo: 2 anos presos preventivamente e pena final de 10 anos resultam em 8 anos a cumprir.",
+          "Há debate sobre medidas cautelares diversas da prisão. Tribunais superiores costumam admitir o desconto do recolhimento domiciliar noturno e de fins de semana, mas não da monitoração eletrônica. Confira a jurisprudência atual antes de citar."
+        ]
+      },
+      {
+        titulo: "Prisão especial",
+        paragrafos: [
+          "É uma forma de cumprimento da prisão cautelar, antes do trânsito em julgado, em local separado da cela comum (art. 295 do CPP).",
+          "Têm direito, entre outros, juízes, membros do Ministério Público, defensores públicos e advogados, com diploma de curso superior."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a detração",
+        tipo: "ilustrativo",
+        texto: "Um réu fica preso preventivamente por 2 anos e depois é condenado a 10 anos. O tempo já cumprido é descontado, e ele precisa cumprir mais 8 anos. Se a prisão cautelar tivesse sido revogada, o desconto seria do tempo efetivamente preso."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Qual a diferença entre prisão penal e prisão cautelar?",
+        modelo: "A penal decorre de sentença condenatória com trânsito em julgado e cumpre a pena. A cautelar é anterior à condenação definitiva, serve a finalidades processuais e não é pena (ex.: preventiva, temporária e flagrante)."
+      },
+      {
+        pergunta: "Por que a prisão do depositário infiel não pode mais ser decretada?",
+        modelo: "Porque o Pacto de San José da Costa Rica, ratificado pelo Brasil, tem status supralegal, e o STF (Súmula Vinculante 25) entendeu que a prisão civil do depositário infiel é ilícita, qualquer que seja a modalidade do depósito. Só permanece a prisão civil do devedor de alimentos."
+      }
+    ]
+  },
+  {
+    id: "aula-09",
+    titulo: "Direitos do preso e audiência de custódia",
+    horas: 2,
+    resumo: "Quem é preso tem direitos constitucionais, e a audiência de custódia permite ao juiz verificar a legalidade da prisão.",
+    simples: [
+      "A Constituição garante ao preso o respeito à integridade física e moral (art. 5º, XLIX), a comunicação imediata da prisão ao juiz e à família (art. 5º, LXII), o direito ao silêncio e à assistência de advogado (art. 5º, LXIII).",
+      "O uso de algemas é exceção (Súmula Vinculante 11). Expor o preso a constrangimento, como o chamado \"perp walk\", é conduta que pode configurar abuso de autoridade (Lei 13.869/2019, art. 13).",
+      "A audiência de custódia deve ocorrer em até 24 horas após a prisão, preferencialmente por videoconferência. Nela o juiz verifica a legalidade e a necessidade da prisão, pode relaxá-la, conceder liberdade provisória ou aplicar medida cautelar. Ela não analisa o mérito da acusação (CNJ, Resolução 213/2015; CPP, art. 310)."
+    ],
+    crianca: "Quem é pego por um problema tem o direito de ficar em silêncio, de ter um advogado e de ser tratado com respeito. E alguém precisa olhar, em pouco tempo, se a prisão foi feita do jeito certo.",
+    secoes: [
+      {
+        titulo: "Direito ao silêncio e não autoincriminação",
+        paragrafos: [
+          "Ninguém é obrigado a produzir prova contra si mesmo (nemo tenetur se detegere).",
+          "A não comunicação da prisão ao juiz pode configurar crime de abuso de autoridade (Lei 13.869/2019, art. 12)."
+        ]
+      },
+      {
+        titulo: "Audiência de custódia",
+        paragrafos: [
+          "Serve para checar a legalidade da prisão e os maus-tratos, não para decidir a culpa.",
+          "O STJ entende que ultrapassar o prazo de 24 horas não torna a prisão ilegal se o juiz justificar o atraso."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a algema sem justificativa",
+        tipo: "ilustrativo",
+        texto: "Uma pessoa presa sem resistência e sem risco de fuga é algemada em audiência pública. Pela Súmula Vinculante 11, o uso só é lícito em casos de resistência, fundado receio de fuga ou perigo, e precisa ser justificado por escrito. Sem isso, o ato pode ser anulado."
+      }
+    ],
+    juris: [
+      { chave: "sv11", ligacao: "Ver o texto integral da Súmula Vinculante 11" }
+    ],
+    questoes: [
+      {
+        pergunta: "O que é a audiência de custódia e qual o seu objetivo?",
+        modelo: "É a apresentação do preso ao juiz em até 24 horas da prisão (CPP, art. 310). O objetivo é verificar a legalidade e a necessidade da prisão e as condições de tratamento do preso, sem analisar o mérito da acusação."
+      },
+      {
+        pergunta: "Quando o uso de algemas é permitido?",
+        modelo: "Só em caso de resistência, de fundado receio de fuga ou de perigo à integridade física própria ou alheia, com justificativa por escrito (Súmula Vinculante 11). Fora disso, o uso é irregular e pode gerar nulidade e responsabilização."
+      }
+    ]
+  },
+  {
+    id: "aula-10",
+    titulo: "Prisão em flagrante",
+    horas: 2,
+    resumo: "O flagrante é a prisão feita no momento do crime ou logo depois. Nem todo flagrante é válido.",
+    simples: [
+      "O [[flagrante]] está previsto no art. 302 do CPP. Pode ser próprio (quem está cometendo a infração ou acabou de cometê-la), impróprio (perseguido logo após, em situação de quase flagrante) ou presumido (encontrado logo depois com objetos que façam presumir a autoria).",
+      "Qualquer pessoa pode prender em flagrante, e as autoridades policiais têm o dever de fazê-lo (art. 301 do CPP).",
+      "Não se lavra auto de prisão em flagrante para infrações de menor potencial ofensivo: lavra-se o termo circunstanciado de ocorrência (TCO), se o autor se comprometer a comparecer ao juizado (Lei 9.099/1995, art. 69, parágrafo único)."
+    ],
+    crianca: "Flagrante é quando alguém pega a pessoa com a mão na massa, ou logo depois. Mas a polícia não pode criar a situação para pegar alguém, nem usar um flagrante que ela mesma fabricou.",
+    secoes: [
+      {
+        titulo: "Tipos de flagrante na prática",
+        paragrafos: [
+          "Flagrante preparado ou provocado: a polícia induz a pessoa ao crime e, por causa das precauções, o crime não se consuma. Não há crime, conforme a Súmula 145 do STF, por se tratar de crime impossível.",
+          "Flagrante esperado: a polícia apenas aguarda o crime acontecer, sem induzir. É legal.",
+          "Flagrante prorrogado ou retardado (ação controlada): a polícia espera o melhor momento para agir. É legal quando há previsão legal, como na Lei de Organizações Criminosas (Lei 12.850/2013, art. 8º) e na Lei de Drogas.",
+          "Flagrante forjado: a polícia fabrica provas para justificar a prisão. É ilegal."
+        ]
+      },
+      {
+        titulo: "Etapas do flagrante",
+        paragrafos: [
+          "Captura, condução coercitiva, lavratura do auto de prisão em flagrante (APF) e recolhimento ao cárcere ou encaminhamento ao juiz."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: o acusado de tráfico",
+        tipo: "ilustrativo",
+        texto: "A polícia combina a venda de droga com um suspeito e prepara toda a operação para prendê-lo, mas, por causa da vigilância, a transação nunca se completa. Pela Súmula 145 do STF, não há crime, porque a própria polícia tornou impossível a consumação."
+      }
+    ],
+    juris: [
+      { chave: "sum145", ligacao: "Ver a Súmula 145 sobre flagrante preparado" }
+    ],
+    questoes: [
+      {
+        pergunta: "Qual a diferença entre flagrante preparado e flagrante esperado?",
+        modelo: "No preparado a polícia induz o agente ao crime, e por isso o crime é impossível (Súmula 145). No esperado a polícia apenas aguarda a prática espontânea, sem induzir, e o flagrante é válido."
+      },
+      {
+        pergunta: "Em quais situações não se lavra auto de prisão em flagrante?",
+        modelo: "Em infrações de menor potencial ofensivo, em que se lavra TCO, e em crime culposo de trânsito em que o autor presta socorro (art. 301 do CTB), sem exigência de fiança e sem flagrante."
+      }
+    ]
+  },
+  {
+    id: "aula-11",
+    titulo: "Prisão preventiva e prisão domiciliar",
+    horas: 2,
+    resumo: "A preventiva é cautelar decretada pelo juiz, com requisitos claros. A domiciliar pode substituí-la.",
+    simples: [
+      "A [[prisao-preventiva]] exige prova da existência do crime e indícios suficientes de autoria (art. 312 do CPP), e um fundamento: garantir a ordem pública ou econômica, a conveniência da instrução criminal ou a aplicação da lei penal.",
+      "Só cabe nas hipóteses do art. 313 do CPP, como crime doloso com pena máxima superior a 4 anos, reincidência em crime doloso, violência doméstica para garantir medidas protetivas, ou dúvida sobre a identidade civil.",
+      "A preventiva não é cabível se o agente agiu amparado por excludente de ilicitude (art. 314). A decisão precisa ser fundamentada (art. 315) e reavaliada a cada 90 dias (art. 316, parágrafo único)."
+    ],
+    crianca: "A prisão preventiva é como segurar uma pessoa antes do julgamento, porque há um motivo sério e concreto. Não basta achar que ela é perigosa: a lei exige um motivo claro e que a prisão seja necessária.",
+    secoes: [
+      {
+        titulo: "Não cabe como antecipação de pena",
+        paragrafos: [
+          "A gravidade do crime, por si só e em abstrato, não basta para decretar a preventiva. O juiz precisa demonstrar o risco concreto.",
+          "Na fase de investigação, o juiz não pode decretá-la de ofício (art. 311, redação atual do CPP)."
+        ]
+      },
+      {
+        titulo: "Prisão domiciliar (art. 318)",
+        paragrafos: [
+          "Não é uma nova espécie de prisão cautelar: substitui a preventiva em situações como pessoa maior de 80 anos, doença grave, gestante, mulher com filho de até 12 anos incompletos e homem que seja o único responsável por filho nessa idade.",
+          "Confira a redação atual do art. 318, porque as hipóteses foram alteradas por leis recentes."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a gravidade do crime",
+        tipo: "ilustrativo",
+        texto: "Alguém é preso em flagrante por um crime grave, mas não há risco concreto de fuga, de reiteração nem de atrapalhar a investigação. O juiz não pode converter a prisão em preventiva apenas pela gravidade em abstrato."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Quais são os requisitos da prisão preventiva?",
+        modelo: "Prova da existência do crime e indícios suficientes de autoria (art. 312), mais um dos fundamentos (ordem pública ou econômica, instrução criminal ou aplicação da lei penal), e uma das hipóteses do art. 313."
+      },
+      {
+        pergunta: "Qual a relação entre prisão domiciliar e prisão preventiva?",
+        modelo: "A domiciliar substitui a preventiva quando o caso se enquadra no art. 318 (ex.: idoso, doença grave, gestante, responsável por criança). Não é uma nova espécie de prisão cautelar."
+      }
+    ]
+  },
+  {
+    id: "aula-12",
+    titulo: "Medidas cautelares diversas e fiança",
+    horas: 2,
+    resumo: "O juiz pode impor medidas menos graves que a prisão. A fiança é uma delas, com regras próprias.",
+    simples: [
+      "As [[medida-cautelar|medidas cautelares diversas da prisão]] estão no art. 319 do CPP: comparecimento periódico em juízo, proibição de frequentar certos lugares, proibição de se ausentar da comarca, recolhimento domiciliar noturno, suspensão de função pública, internação provisória, fiança, monitoração eletrônica, proibição de contato e suspensão de atividade econômica.",
+      "A [[fianca]] é uma garantia em dinheiro, com valor definido conforme a pena e a situação do acusado (art. 325 do CPP). O delegado pode concedê-la nos crimes com pena máxima de até 4 anos (art. 322). O juiz pode conceder em qualquer caso afiançável.",
+      "Não cabe fiança em crimes inafiançáveis, como racismo, ação de grupos armados contra o Estado democrático, crimes hediondos, tráfico, tortura e terrorismo (art. 5º, XLII, XLIII e XLIV, da CF)."
+    ],
+    crianca: "Em vez de levar a pessoa para a cadeia, o juiz pode mandar ela cumprir regras, como se apresentar todo mês, não sair da cidade ou não chegar perto de alguém. Quando ela paga uma quantia para responder ao processo solta, isso se chama fiança.",
+    secoes: [
+      {
+        titulo: "Quebra da fiança",
+        paragrafos: [
+          "A fiança é quebrada se o acusado, intimado, não comparece, obstrui o processo ou pratica nova infração dolosa (art. 327 do CPP). Nesse caso, perde metade do valor e o juiz pode decretar outra medida ou a preventiva.",
+          "O afiançado não pode se ausentar da comarca por mais de 8 dias sem comunicar o juiz (art. 328)."
+        ]
+      },
+      {
+        titulo: "Não confunda com prisão domiciliar",
+        paragrafos: [
+          "A medida do art. 319 (recolhimento domiciliar noturno) é diferente da prisão domiciliar do art. 318. A primeira é uma cautelar diversa, a segunda substitui a preventiva."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a fiança quebrada",
+        tipo: "ilustrativo",
+        texto: "Um réu pagou fiança e recebeu intimação para audiência, mas não compareceu. A fiança é quebrada, ele perde metade do valor pago e o juiz pode decretar a preventiva."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Quais crimes não admitem fiança?",
+        modelo: "Racismo, ação de grupos armados contra o Estado democrático, crimes hediondos, tráfico, tortura e terrorismo, conforme a CF (art. 5º, XLII a XLIV)."
+      },
+      {
+        pergunta: "Em que situações a fiança é quebrada?",
+        modelo: "Quando o afiançado, intimado, não comparece, obstrui o processo ou pratica nova infração dolosa (art. 327). Ele perde metade do valor e pode sofrer outra medida cautelar."
+      }
+    ]
+  },
+  {
+    id: "aula-13",
+    titulo: "Processo e procedimento: os ritos",
+    horas: 2,
+    resumo: "Processo é o conjunto de atos. Procedimento é a forma como ele se desenvolve, e varia conforme a pena.",
+    simples: [
+      "O [[processo]] vai da peça acusatória (denúncia ou queixa) até a decisão final. O [[procedimento]] é o modo como esse processo se desenvolve.",
+      "O procedimento se divide em fases: postulatória (oferecimento da peça acusatória), instrutória (produção de provas), decisória (sentença) e recursal. A investigação não faz parte do processo.",
+      "Pelo tipo de pena, o procedimento comum é ordinário (pena máxima igual ou superior a 4 anos), sumário (pena máxima inferior a 4 anos) ou sumaríssimo (infrações de menor potencial ofensivo, pela Lei 9.099/1995)."
+    ],
+    crianca: "Processo é o caminho inteiro de um caso, do começo ao fim. Procedimento é o jeito de andar por esse caminho, que muda conforme a gravidade do que aconteceu.",
+    secoes: [
+      {
+        titulo: "Procedimentos especiais",
+        paragrafos: [
+          "Lei de Drogas (Lei 11.343/2006), crimes dolosos contra a vida (júri), crimes funcionais afiançáveis, crimes contra a honra, crimes de prefeito (DL 201/1967) e processos nos tribunais (Lei 8.038/1990) têm regras próprias.",
+          "A Lei de Organizações Criminosas (Lei 12.850/2013, art. 22) segue o rito ordinário."
+        ]
+      },
+      {
+        titulo: "Violência doméstica",
+        paragrafos: [
+          "Nos crimes praticados com violência doméstica contra a mulher, não se aplica a Lei 9.099/1995, independentemente da pena (art. 41 da Lei 11.340/2006). Logo, não há rito sumaríssimo, transação, suspensão condicional do processo nem TCO."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a ameaça no contexto doméstico",
+        tipo: "ilustrativo",
+        texto: "Uma ameaça praticada contra a companheira, com pena baixa, poderia ser de menor potencial ofensivo. Mas, por ser violência doméstica contra a mulher, o rito sumaríssimo não se aplica, mesmo com pena baixa."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Qual a diferença entre processo e procedimento?",
+        modelo: "Processo é o conjunto de atos, da peça acusatória até o provimento final. Procedimento é a forma como esses atos se desenvolvem, em fases e ritos definidos conforme a pena ou a natureza do crime."
+      },
+      {
+        pergunta: "Como é definido o rito de um crime comum?",
+        modelo: "Pela pena máxima: ordinário se igual ou superior a 4 anos, sumário se inferior a 4 anos, e sumaríssimo para infrações de menor potencial ofensivo. Crimes especiais têm rito próprio."
+      }
+    ]
+  },
+  {
+    id: "aula-14",
+    titulo: "Procedimento comum ordinário: recebimento, rejeição e citação",
+    horas: 2,
+    resumo: "Após a denúncia, o juiz verifica impedimentos, competência e se recebe ou rejeita a peça acusatória. Se recebe, o acusado é citado.",
+    simples: [
+      "No [[rito-ordinario|procedimento comum ordinário]], a denúncia é oferecida (art. 41 do CPP). Antes de decidir, o juiz precisa verificar se é impedido (art. 252) ou suspeito (art. 254) e se é competente para julgar.",
+      "O juiz pode [[rejeicao-denuncia|rejeitar]] a denúncia (art. 395) ou aceitá-la. Se aceitar, o acusado é citado para apresentar resposta à acusação.",
+      "A citação é, em regra, pessoal. Se o réu se oculta, pode ser citado por hora certa. Se não é encontrado, é citado por edital (art. 366 do CPP), e o processo fica suspenso."
+    ],
+    crianca: "Antes de um caso começar de verdade, o juiz confere se o pedido está bem escrito, se ele mesmo pode julgar e se o acusado foi chamado direito. Se algo estiver errado, o caso pode não começar.",
+    secoes: [
+      {
+        titulo: "Rejeitar a denúncia",
+        paragrafos: [
+          "A decisão que rejeita a denúncia faz coisa julgada apenas formal. O Ministério Público pode recorrer por RESE (art. 581, I, do CPP) ou apresentar nova denúncia.",
+          "No Juizado Especial, o recurso cabível é a apelação (art. 82 da Lei 9.099/1995)."
+        ]
+      },
+      {
+        titulo: "Prazo da resposta",
+        paragrafos: [
+          "O acusado citado tem 10 dias para apresentar resposta à acusação (art. 396). A Defensoria Pública tem prazo em dobro, de 20 dias, contado a partir da intimação e não da juntada do mandado cumprido.",
+          "Na contagem do prazo, exclui-se o primeiro dia e inclui-se o último. Se o último cair em fim de semana ou feriado, prorroga-se para o próximo dia útil."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a citação por edital",
+        tipo: "ilustrativo",
+        texto: "O acusado não é encontrado e não atende a citação por hora certa. Ele é citado por edital (art. 366), e o processo e a prescrição ficam suspensos enquanto ele não aparecer ou constituir advogado."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "O que o juiz deve analisar antes de receber ou rejeitar a denúncia?",
+        modelo: "Se é impedido (art. 252) ou suspeito (art. 254), se é competente e se a denúncia atende aos requisitos (art. 41) e não há causa de rejeição (art. 395)."
+      },
+      {
+        pergunta: "Qual é o recurso contra a decisão que rejeita a denúncia?",
+        modelo: "RESE, previsto no art. 581, I, do CPP. No Juizado Especial, a apelação (art. 82 da Lei 9.099/1995)."
+      }
+    ]
+  },
+  {
+    id: "aula-15",
+    titulo: "Causas de rejeição e pressupostos processuais",
+    horas: 2,
+    resumo: "A denúncia é rejeitada por inépcia, falta de pressuposto ou condição da ação, ou falta de justa causa.",
+    simples: [
+      "Pelo art. 395 do CPP, a denúncia é rejeitada quando é inepta (art. 41), quando falta [[pressupostos-processuais|pressuposto processual]] ou condição para a ação penal, ou quando falta [[justa-causa]].",
+      "Os [[pressupostos-processuais|pressupostos processuais]] se dividem em de existência (peça acusatória, órgão jurisdicional, capacidade de ser parte) e de validade (juiz competente e imparcial, capacidade processual, ausência de litispendência, coisa julgada e perempção).",
+      "As condições da ação são legitimidade, interesse e possibilidade jurídica do pedido. Alguns crimes exigem condição específica, como a representação da vítima (ex.: ameaça, art. 147 do CP) ou a requisição do Ministro da Justiça (ex.: crime cometido no exterior, art. 7º, §3º, do CP)."
+    ],
+    crianca: "Para o processo começar, é preciso que exista uma acusação escrita direito, um juiz, alguém que possa ser parte e uma razão para acusar. Se faltar um desses pedaços, o caso nem começa.",
+    secoes: [
+      {
+        titulo: "Inépcia e justa causa",
+        paragrafos: [
+          "Inépcia formal: a denúncia não descreve o fato, o autor ou a classificação do crime (art. 41).",
+          "Falta de justa causa: não há indícios de autoria e prova da materialidade. É a chamada inépcia material."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a representação ausente",
+        tipo: "ilustrativo",
+        texto: "Uma pessoa é denunciada por ameaça, mas a vítima nunca apresentou representação no prazo. Falta condição específica da ação penal, e a denúncia pode ser rejeitada."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Quais são as causas de rejeição da denúncia?",
+        modelo: "Inépcia da denúncia (art. 41), falta de pressuposto processual ou condição da ação penal, e falta de justa causa (art. 395 do CPP)."
+      },
+      {
+        pergunta: "Qual a diferença entre condição da ação e condição específica?",
+        modelo: "As condições da ação (legitimidade, interesse e possibilidade jurídica do pedido) são gerais. A condição específica é exigida só em alguns crimes, como a representação (ex.: ameaça) ou a requisição do Ministro da Justiça (ex.: crime no exterior)."
+      }
+    ]
+  },
+  {
+    id: "aula-16",
+    titulo: "Resposta à acusação, revelia e absolvição sumária",
+    horas: 2,
+    resumo: "Após a citação, a defesa deve apresentar resposta. Se não apresentar, o processo segue como revelia.",
+    simples: [
+      "A [[resposta-acusacao|resposta à acusação]] é obrigatória e deve ser apresentada no prazo de 10 dias (art. 396 do CPP). É nela que a defesa pode arguir preliminares, apresentar documentos, especificar provas e arrolar testemunhas, até 8 no rito ordinário e 5 no sumário.",
+      "Se o acusado não apresentar a resposta, o juiz decreta a [[revelia]]. Na revelia o processo segue sem a presença do acusado, mas os fatos não se presumem verdadeiros: continua sendo ônus da acusação provar a autoria e a materialidade.",
+      "Depois da resposta, o juiz pode fazer a absolvição sumária (art. 397), quando há atipicidade, excludente de ilicitude, excludente de culpabilidade ou extinção da punibilidade."
+    ],
+    crianca: "Depois que o acusado é chamado, ele tem um tempo para falar a sua versão. Se ele não fala, o caso continua, mas quem acusa ainda precisa provar tudo. E, se já for claro que não há crime, o juiz pode encerrar logo o caso.",
+    secoes: [
+      {
+        titulo: "Defesa preliminar",
+        paragrafos: [
+          "Não confunda a resposta à acusação com a defesa preliminar, que vem antes do recebimento e é prevista só em alguns casos, como na Lei de Drogas (art. 55 da Lei 11.343/2006) e em crimes funcionais afiançáveis (art. 514 do CPP)."
+        ]
+      },
+      {
+        titulo: "Defensoria Pública",
+        paragrafos: [
+          "Quando a defesa é feita pela Defensoria, o prazo é em dobro (20 dias), conforme o art. 128, I, da LC 80/1994."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a revelia",
+        tipo: "ilustrativo",
+        texto: "O réu foi citado e não apresentou resposta no prazo. O juiz decreta a revelia e o processo segue, mas a acusação continua com o ônus de provar a autoria e a materialidade do crime."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "O que acontece se o acusado não apresenta a resposta à acusação?",
+        modelo: "O juiz decreta a revelia. O processo segue sem a presença do acusado, mas não há presunção de veracidade dos fatos da inicial: a acusação continua com o ônus de provar autoria e materialidade."
+      },
+      {
+        pergunta: "Quais hipóteses permitem a absolvição sumária?",
+        modelo: "Atipicidade, excludente de ilicitude, excludente de culpabilidade e extinção da punibilidade, conforme o art. 397 do CPP."
+      }
+    ]
+  },
+  {
+    id: "aula-17",
+    titulo: "RESE: recurso em sentido estrito",
+    horas: 2,
+    resumo: "O RESE é o recurso previsto para decisões específicas, como a que rejeita a denúncia.",
+    simples: [
+      "O [[rese|RESE]] (recurso em sentido estrito) está no art. 581 do CPP. O inciso I cabe contra a decisão que não recebe a denúncia ou a queixa, ou seja, a que rejeita a peça acusatória.",
+      "O prazo é de 5 dias (art. 586 do CPP). O juiz pode se retratar (reconsiderar) antes de enviar o recurso ao tribunal (art. 589).",
+      "A decisão de rejeição faz coisa julgada apenas formal, por isso a acusação pode apresentar nova denúncia se surgirem novas provas. No Juizado Especial, o recurso é a apelação (art. 82 da Lei 9.099/1995)."
+    ],
+    crianca: "Se o juiz diz que a acusação não pode começar, quem acusa pode pedir para outra pessoa, de cima, olhar essa decisão. Mas tem um prazo curto para pedir isso, e o juiz pode mudar de ideia antes de mandar o pedido para cima.",
+    secoes: [
+      {
+        titulo: "Outras hipóteses do art. 581",
+        paragrafos: [
+          "O art. 581 tem outros incisos, como a decisão sobre incompetência, a que concede ou nega liberdade provisória e a que decide sobre prescrição. Vale conferir a lista atual antes da prova."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: a rejeição e a nova denúncia",
+        tipo: "ilustrativo",
+        texto: "O juiz rejeita a denúncia por falta de justa causa. O MP interpõe RESE e o tribunal mantém a rejeição. Depois, surgem novas provas de autoria, e o MP pode apresentar nova denúncia, porque a decisão não faz coisa julgada material."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Qual é o cabimento do RESE para a rejeição da denúncia?",
+        modelo: "Art. 581, I, do CPP: cabe contra a decisão que não recebe a denúncia ou queixa. O prazo é de 5 dias (art. 586), e o juiz pode se retratar (art. 589)."
+      },
+      {
+        pergunta: "Por que a rejeição da denúncia não impede nova acusação?",
+        modelo: "Porque a decisão faz coisa julgada apenas formal, e não material. Por isso, o MP pode oferecer nova denúncia, principalmente se surgirem novas provas."
       }
     ]
   }
