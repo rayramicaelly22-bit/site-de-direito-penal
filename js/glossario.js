@@ -125,6 +125,14 @@ const GLOSSARIO = {
     termo: "Revelia",
     def: "Situação em que o acusado não responde à acusação. O processo segue sem a sua presença, mas não há presunção de veracidade dos fatos."
   },
+  "imunidade": {
+    termo: "Imunidade à prisão",
+    def: "Proteção especial de algumas pessoas, como o Presidente da República, diplomatas, senadores e deputados, que limita quando elas podem ser presas."
+  },
+  "mandado-prisao": {
+    termo: "Mandado de prisão",
+    def: "Ordem escrita expedida pelo juiz para prender alguém. Pode ser cumprida por qualquer policial quando registrada no BNMP (art. 289-A do CPP)."
+  },
   "rese": {
     termo: "RESE (recurso em sentido estrito)",
     def: "Recurso previsto no art. 581 do CPP, cabível em hipóteses específicas, como a decisão que rejeita a denúncia (inciso I). Prazo de 5 dias."

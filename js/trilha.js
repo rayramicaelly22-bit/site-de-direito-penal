@@ -14,7 +14,7 @@ const PRIORIDADE = {
   "aula-05": "media", "aula-06": "media", "aula-07": "media",
   "aula-08": "alta", "aula-09": "alta", "aula-10": "alta", "aula-11": "alta",
   "aula-12": "alta", "aula-13": "baixa", "aula-14": "alta", "aula-15": "alta",
-  "aula-16": "alta", "aula-17": "alta"
+  "aula-16": "alta", "aula-17": "alta", "aula-18": "alta"
 };
 
 const ORDEM_PRIORIDADE = { alta: 0, media: 1, baixa: 2 };

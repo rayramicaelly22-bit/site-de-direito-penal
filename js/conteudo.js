@@ -73,7 +73,8 @@ const FONTES = {
   "aula-14": ["cpp", "l9099", "lc80"],
   "aula-15": ["cpp", "cp"],
   "aula-16": ["cpp", "l11343", "lc80"],
-  "aula-17": ["cpp", "l9099"]
+  "aula-17": ["cpp", "l9099"],
+  "aula-18": ["cf", "cpp", "cp"]
 };
 
 // Seção de cada aula: "complementar" = não foi dada pelo professor; o resto é "faculdade".
@@ -445,8 +446,10 @@ const AULAS = [
       {
         titulo: "Detração",
         paragrafos: [
-          "O tempo de prisão provisória (cautelar) é descontado da pena definitiva (art. 42 do CP). Exemplo: 2 anos presos preventivamente e pena final de 10 anos resultam em 8 anos a cumprir.",
-          "Há debate sobre medidas cautelares diversas da prisão. Tribunais superiores costumam admitir o desconto do recolhimento domiciliar noturno e de fins de semana, mas não da monitoração eletrônica. Confira a jurisprudência atual antes de citar."
+          "Detração é o desconto, na pena definitiva, do tempo que a pessoa já ficou presa provisoriamente (art. 42 do CP). Não importa se a prisão foi no Brasil ou no exterior, nem se foi no mesmo processo.",
+          "Exemplo: 2 anos presos preventivamente e condenação a 10 anos. Desconta-se 2 anos, e a pessoa cumpre mais 8 anos.",
+          "Ponto importante: a detração desconta da pena privativa de liberdade. Se a pena for de multa ou restritiva de direitos, o tempo preso não é descontado dela.",
+          "Medidas cautelares diversas da prisão: o STJ entende que o recolhimento domiciliar noturno, combinado com a proibição de sair da comarca nos fins de semana, pode ser descontado. A monitoração eletrônica, em regra, não. Confira a jurisprudência atual antes de citar, porque o entendimento pode mudar."
         ]
       },
       {
@@ -873,6 +876,63 @@ const AULAS = [
       {
         pergunta: "Por que a rejeição da denúncia não impede nova acusação?",
         modelo: "Porque a decisão faz coisa julgada apenas formal, e não material. Por isso, o MP pode oferecer nova denúncia, principalmente se surgirem novas provas."
+      }
+    ]
+  },
+  {
+    id: "aula-18",
+    titulo: "Imunidades à prisão, mandado de prisão e emprego da força",
+    horas: 2,
+    resumo: "Qualquer pessoa pode ser presa, mas algumas têm regras especiais. O mandado e a força policial também têm limites.",
+    simples: [
+      "Como regra, todas as pessoas podem ser presas. Há exceções: são as [[imunidade|imunidades à prisão]], que protegem o exercício de funções públicas.",
+      "O [[mandado-prisao|mandado de prisão]] é expedido pelo juiz. Ele é passado em duplicata, e o cumprimento pode ser feito por qualquer policial quando registrado no Banco Nacional de Mandados de Prisão (art. 289-A do CPP).",
+      "A força só pode ser usada em caso de resistência ou de fuga (art. 284 do CPP). Ela pode ser usada pelo próprio policial ou por um particular que esteja ajudando."
+    ],
+    crianca: "Todo mundo pode ser chamado a responder pelo que fez, mas algumas pessoas têm um tipo de proteção porque cuidam de coisas importantes para o país. Quando a polícia precisa usar a força, ela só pode fazer isso se a pessoa resistir ou tentar fugir.",
+    secoes: [
+      {
+        titulo: "Imunidades à prisão",
+        paragrafos: [
+          "Presidente da República: não pode ser preso enquanto não sofrer condenação definitiva.",
+          "Diplomatas, o chefe de governo estrangeiro e os funcionários de organização internacional, com suas famílias: têm imunidade à prisão, conforme os tratados internacionais.",
+          "Cônsul: só tem a proteção enquanto estiver em serviço.",
+          "Senadores e deputados: só podem ser presos em flagrante de crime inafiançável (art. 53, §2º, da CF).",
+          "Magistrados e membros do Ministério Público: em flagrante, só de crime inafiançável. Não há essa restrição para a preventiva e a temporária.",
+          "Advogado: se o crime tem relação com a profissão, só pode ser preso em flagrante de crime inafiançável. Fora da função, pode ser preso, mas a prisão exige a presença de representante da OAB (art. 7º, §3º, da Lei 8.906/1994)."
+        ]
+      },
+      {
+        titulo: "Mandado de prisão",
+        paragrafos: [
+          "O mandado é expedido pelo juiz e passado em duplicata (art. 285 do CPP).",
+          "Se o preso não souber ler ou assinar, o mandado precisa de duas testemunhas que assinem (art. 286 do CPP).",
+          "A falta do mandado em mãos não impede o cumprimento da prisão quando o crime é inafiançável (art. 287 do CPP)."
+        ]
+      },
+      {
+        titulo: "Emprego da força",
+        paragrafos: [
+          "A força é usada apenas em caso de resistência ou de fuga (art. 284 do CPP). O uso fora disso pode configurar abuso de autoridade."
+        ]
+      }
+    ],
+    casos: [
+      {
+        titulo: "Caso hipotético: o advogado preso",
+        tipo: "ilustrativo",
+        texto: "Um advogado é acusado de um crime ligado ao exercício da profissão, e um policial quer prendê-lo em flagrante por um crime afiançável. Como o crime é afiançável, a prisão em flagrante não pode ser feita por essa regra da função. Se a prisão fosse fora da função, ela exigiria a presença de representante da OAB."
+      }
+    ],
+    juris: [],
+    questoes: [
+      {
+        pergunta: "Quem pode ser preso em flagrante de crime afiançável, sendo senador ou deputado?",
+        modelo: "Ninguém nessa situação. Senadores e deputados só podem ser presos em flagrante de crime inafiançável (art. 53, §2º, da CF)."
+      },
+      {
+        pergunta: "Em quais situações a força policial pode ser usada para cumprir uma prisão?",
+        modelo: "Apenas em caso de resistência ou de fuga do preso (art. 284 do CPP). Fora dessas situações, o uso da força é irregular."
       }
     ]
   }
