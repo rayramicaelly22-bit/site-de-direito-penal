@@ -79,6 +79,20 @@ const FONTES = {
 // Seção de cada aula: "complementar" = não foi dada pelo professor; o resto é "faculdade".
 const COMPLEMENTAR = ["aula-01", "aula-02", "aula-03", "aula-04", "aula-05", "aula-06", "aula-07"];
 
+// Macetes de decoreba (mostrados nas aulas quando há um).
+const MACETES = {
+  "aula-08": "As espécies de prisão são **PC-CAM**: Penal, Cautelar, Civil, Administrativa, Militar. Lembrete: a civil hoje vale só para devedor de alimentos.",
+  "aula-09": "**JFSA** = Juiz, Família (comunicação da prisão), Silêncio e Advogado. Audiência de custódia: em 24 horas, o juiz vê a prisão.",
+  "aula-10": "Flagrante por inciso do art. 302: **I** está cometendo, **II** acabou de cometer, **III** perseguido logo após, **IV** encontrado com objetos. Macete: **Está, Acabou, Perseguido, Encontrado**.",
+  "aula-11": "Os fundamentos da preventiva são **OCA**: Ordem (pública e econômica), Conveniência (da instrução), Aplicação (da lei penal).",
+  "aula-12": "Crimes inafiançáveis: **RAHTTT** = Racismo, grupos Armados, Hediondos, Tortura, Tráfico, Terrorismo. Quebra da fiança: intimado e não compareceu, obstruiu o processo ou cometeu nova infração dolosa.",
+  "aula-13": "Pena **4 anos ou mais** → ordinário. Pena **menos de 4 anos** → sumário. Menor potencial ofensivo → sumaríssimo.",
+  "aula-14": "Ordem no ordinário: **DIRC** = Denúncia, Impedimento/suspeição, Recebe ou rejeita, Citação. Frase: **Dona Inês Recebeu Carta**.",
+  "aula-15": "Causas de rejeição (art. 395): **IPJ** = Inépcia, Pressuposto ou condição da ação, Justa causa.",
+  "aula-16": "Números para decorar: resposta em **10 dias**; testemunhas: **8** no ordinário e **5** no sumário. Revelia: não respondeu, mas a acusação continua provando tudo.",
+  "aula-17": "**581, I = rejeitou a denúncia → RESE em 5 dias** (art. 586). Juizado Especial: o recurso é a apelação."
+};
+
 const AULAS = [
   {
     id: "aula-01",

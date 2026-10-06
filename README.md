@@ -1,6 +1,6 @@
-# ARETA Mens Rea
+# Estudo Penal
 
-Site para estudar Direito Penal, voltado à atividade oral e à prova.
+Site para estudar Direito Penal, voltado à atividade oral e à prova. Cores inspiradas na bandeira do Brasil (verde, amarelo, azul) e no vermelho e off-white.
 
 ## O que tem
 

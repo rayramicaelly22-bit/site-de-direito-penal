@@ -38,7 +38,7 @@ function esc(texto) {
 
 // Converte [[chave]] e [[chave|texto]] em termos clicáveis do glossário.
 function marcar(texto) {
-  return esc(texto).replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, chave, rotulo) => {
+  return esc(texto).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, chave, rotulo) => {
     const entrada = GLOSSARIO[chave];
     const visivel = rotulo || (entrada ? entrada.termo : chave);
     if (!entrada) return visivel;
@@ -129,7 +129,7 @@ function fontesHtml(aula) {
 function telaInicio() {
   const feitas = aulasFeitas().filter((id) => FACULDADE().some((a) => a.id === id)).length;
   return `
-    <h1>ARETA Mens Rea</h1>
+    <h1>Estudo Penal</h1>
     <p>Site para estudar Direito Penal para a atividade oral e para a prova. Em cada aba você encontra:</p>
     <ul>
       <li><strong>Faculdade:</strong> o conteúdo dado pelo professor, com explicação simples, casos e perguntas.</li>
@@ -301,6 +301,7 @@ function telaAula(id) {
     <p class="suave"><a href="${rotaBase}">← ${aula.secao === "faculdade" ? "Faculdade" : "Complementar"}</a> · Aula ${indice + 1} de ${lista.length} · ${aula.horas}h</p>
     <h1>${esc(aula.titulo)}</h1>
     <div class="card">${marcar(aula.resumo)}</div>
+    ${MACETES[aula.id] ? `<div class="macete"><strong>Macete para decorar:</strong> ${marcar(MACETES[aula.id])}</div>` : ""}
 
     <div class="linha">
       <button class="secundario" id="btn-crianca" aria-expanded="false">Explicar para uma criança</button>
@@ -510,7 +511,7 @@ function importarProgresso(arquivo) {
       msg.textContent = "Progresso importado.";
       render();
     } catch (erro) {
-      msg.textContent = "Não foi possível importar: o arquivo não tem o formato do ARETA.";
+      msg.textContent = "Não foi possível importar: o arquivo não tem o formato do Estudo Penal.";
     }
   };
   leitor.readAsText(arquivo);
