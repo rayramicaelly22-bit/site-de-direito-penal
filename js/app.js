@@ -197,7 +197,6 @@ function telaInicio() {
       <a href="#/progresso">Ver progresso e histórico</a>
     </div>
     <div class="linha">
-      <a class="botao" href="#/trilha">Montar minha trilha</a>
       <a class="botao secundario" href="#/nivel">Descubra seu nível</a>
       <a class="botao secundario" href="#/simulado">Simulado do dia</a>
       <a class="botao secundario" href="#/faculdade">Ver conteúdo da faculdade</a>
@@ -811,7 +810,6 @@ function telaNivel() {
       <div class="linha">
         <button id="btn-nivel-comecar">Fazer o teste</button>
         <button class="secundario" id="btn-nivel-pular">Pular por enquanto</button>
-        <a class="botao secundario" href="#/trilha">Montar minha trilha</a>
       </div>`;
   }
   return `
