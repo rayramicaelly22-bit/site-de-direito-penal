@@ -702,12 +702,27 @@ function telaNivel() {
   }
 
   const ultimo = LS.get("areta-nivel", null);
+  if (nivelPendente()) {
+    return `
+      <h1>Antes de começar: descubra seu nível</h1>
+      ${bloco("faculdade")}
+      <p>São 10 perguntas sobre o que o professor passou. Assim você vê o que já sabe e o que precisa estudar mais. Leva poucos minutos.</p>
+      <div class="linha">
+        <button id="btn-nivel-comecar">Fazer o teste</button>
+        <button class="secundario" id="btn-nivel-pular">Pular por enquanto</button>
+      </div>`;
+  }
   return `
     <h1>Descubra seu nível</h1>
     ${bloco("faculdade")}
     <p>São 10 perguntas sobre o que o professor passou. Responda para ver quanto você já sabe.</p>
     ${ultimo ? `<p>Seu último resultado: <strong>${ultimo.acertos}/${ultimo.total}</strong>.</p>` : ""}
     <button id="btn-nivel-comecar">Começar teste</button>`;
+}
+
+// Teste pendente: ainda não foi feito e a pessoa não pulou.
+function nivelPendente() {
+  return !LS.get("areta-nivel", null) && !LS.get("areta-nivel-pulado", false);
 }
 
 function telaNaoEncontrada() {
@@ -719,7 +734,11 @@ function telaNaoEncontrada() {
 function rota() {
   const partes = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
   const [aba, ...resto] = partes;
-  if (!aba || aba === "inicio") return { aba: "inicio", html: telaInicio };
+  if (!aba || aba === "inicio") {
+    // Quem ainda não fez o teste de nível (e não pulou) cai nele antes da página inicial.
+    if (nivelPendente()) return { aba: null, html: telaNivel };
+    return { aba: "inicio", html: telaInicio };
+  }
   if (aba === "trilha") return { aba, html: telaTrilha };
   if (aba === "faculdade") return { aba, html: telaFaculdade };
   if (aba === "complementar") return { aba, html: telaComplementar };
@@ -859,6 +878,15 @@ function ligarEventos() {
         };
       });
       nivelEstado.fase = "resultado";
+      render();
+    });
+  }
+
+  const btnNivelPular = document.getElementById("btn-nivel-pular");
+  if (btnNivelPular) {
+    btnNivelPular.addEventListener("click", () => {
+      LS.set("areta-nivel-pulado", true);
+      location.hash = "#/inicio";
       render();
     });
   }
