@@ -80,6 +80,38 @@ function lerProgresso() {
 
 function salvarProgresso(p) {
   LS.set(PROG_KEY, p);
+  agendarEnvioNuvem();
+}
+
+// Bloco de login e sincronização na aba Progresso.
+function blocoNuvem() {
+  if (!nuvemDisponivel()) {
+    return `<div class="card borda"><strong>Sincronização:</strong> ainda não configurada. Por enquanto, o progresso fica só neste navegador.</div>`;
+  }
+  if (nuvem.sessao) {
+    return `
+      <div class="card">
+        <p><strong>Conectado como:</strong> ${esc(nuvem.sessao.user.email)}. O progresso é salvo na nuvem.</p>
+        <div class="linha">
+          <button id="btn-sincronizar">Sincronizar agora</button>
+          <button class="secundario" id="btn-sair">Sair</button>
+        </div>
+        <p id="msg-nuvem" class="suave"></p>
+      </div>`;
+  }
+  return `
+    <div class="card">
+      <p>Entre para salvar seu progresso na nuvem e usar em outro aparelho.</p>
+      <label for="nuvem-email">E-mail</label>
+      <input type="email" id="nuvem-email" autocomplete="email">
+      <label for="nuvem-senha">Senha</label>
+      <input type="password" id="nuvem-senha" autocomplete="current-password">
+      <div class="linha" style="margin-top: 12px;">
+        <button id="btn-entrar">Entrar</button>
+        <button class="secundario" id="btn-criar">Criar conta</button>
+      </div>
+      <p id="msg-nuvem" class="suave"></p>
+    </div>`;
 }
 
 function registrar(p, acao, aulaId) {
@@ -461,7 +493,8 @@ function telaProgresso() {
 
   return `
     <h1>Progresso</h1>
-    <p>Seu progresso fica salvo neste navegador. Para usar em outro aparelho, exporte o arquivo e importe lá.</p>
+    <p>Seu progresso fica salvo neste navegador. Com uma conta, ele também fica salvo na nuvem e aparece em outros aparelhos.</p>
+    ${blocoNuvem()}
     <div class="card">
       <p><strong>Aulas estudadas:</strong> ${estudadas} de ${faculdade.length} (Faculdade)</p>
       <p><strong>Dias da trilha concluídos:</strong> ${diasConcluidos}</p>
@@ -603,6 +636,40 @@ function ligarEventos() {
     });
   });
 
+  const msgNuvem = () => document.getElementById("msg-nuvem");
+
+  const btnEntrar = document.getElementById("btn-entrar");
+  if (btnEntrar) {
+    btnEntrar.addEventListener("click", async () => {
+      const erro = await entrarNuvem(document.getElementById("nuvem-email").value, document.getElementById("nuvem-senha").value);
+      msgNuvem().textContent = erro || "Entrou. Progresso sincronizado.";
+    });
+  }
+
+  const btnCriar = document.getElementById("btn-criar");
+  if (btnCriar) {
+    btnCriar.addEventListener("click", async () => {
+      const texto = await criarContaNuvem(document.getElementById("nuvem-email").value, document.getElementById("nuvem-senha").value);
+      msgNuvem().textContent = texto;
+    });
+  }
+
+  const btnSincronizar = document.getElementById("btn-sincronizar");
+  if (btnSincronizar) {
+    btnSincronizar.addEventListener("click", async () => {
+      const erro = await sincronizarAgora();
+      msgNuvem().textContent = erro || "Sincronizado.";
+    });
+  }
+
+  const btnSair = document.getElementById("btn-sair");
+  if (btnSair) {
+    btnSair.addEventListener("click", async () => {
+      await sairNuvem();
+      render();
+    });
+  }
+
   const btnExportar = document.getElementById("btn-exportar");
   if (btnExportar) btnExportar.addEventListener("click", exportarProgresso);
 
@@ -665,4 +732,7 @@ window.addEventListener("hashchange", () => {
 });
 
 if (!location.hash) location.hash = "#/inicio";
+iniciarNuvem(() => {
+  if (location.hash.startsWith("#/progresso")) render();
+});
 render();
