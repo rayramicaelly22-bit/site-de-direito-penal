@@ -1,48 +1,35 @@
-:root {
-  --fundo: #fbf7ee;
-  --texto: #2a1f1d;
-  --suave: #6b5f58;
-  --vermelho: #b71c1c;
-  --vermelho-claro: #f8e1de;
+/* Cores da ARETA: vermelho e off-white. Amarelo, verde e azul destacam temas. */
+:root,
+:root[data-theme="light"] {
+  --fundo: #fbf6ea;
+  --papel: #f1e8d4;
+  --texto: #2b1514;
+  --suave: #6e5a57;
+  --vermelho: #b1121b;
+  --vermelho-claro: #f6dedb;
   --amarelo: #f5b800;
-  --amarelo-claro: #fff4c7;
-  --verde: #1e7b3c;
-  --verde-claro: #e0f2e6;
-  --azul: #1a3d8f;
-  --azul-claro: #e3ebfa;
-  --borda: #e5dccb;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --fundo: #1c1a1a;
-    --texto: #f3ede4;
-    --suave: #b5aaa0;
-    --vermelho: #ef5350;
-    --vermelho-claro: #3a2020;
-    --amarelo: #ffd54f;
-    --amarelo-claro: #3d3310;
-    --verde: #6fcf8e;
-    --verde-claro: #1d3326;
-    --azul: #8fb0ff;
-    --azul-claro: #1c2740;
-    --borda: #3a3430;
-  }
+  --amarelo-claro: #fdf0c2;
+  --verde: #1f7a3a;
+  --verde-claro: #dcefe1;
+  --azul: #1d4e9b;
+  --azul-claro: #dfe8f7;
+  --borda: #e2d6bd;
 }
 
 :root[data-theme="dark"] {
-  --fundo: #1c1a1a;
-  --texto: #f3ede4;
-  --suave: #b5aaa0;
-  --vermelho: #ef5350;
-  --vermelho-claro: #3a2020;
-  --amarelo: #ffd54f;
-  --amarelo-claro: #3d3310;
-  --verde: #6fcf8e;
-  --verde-claro: #1d3326;
-  --azul: #8fb0ff;
-  --azul-claro: #1c2740;
-  --borda: #3a3430;
+  --fundo: #1d1515;
+  --papel: #2a1e1e;
+  --texto: #f7efe2;
+  --suave: #bfae9f;
+  --vermelho: #ef5a62;
+  --vermelho-claro: #3b2121;
+  --amarelo: #ffd23d;
+  --amarelo-claro: #3d3212;
+  --verde: #6fd08f;
+  --verde-claro: #1d3427;
+  --azul: #8fb6ff;
+  --azul-claro: #1c2a44;
+  --borda: #3d2e2e;
 }
 
 * { box-sizing: border-box; }
@@ -57,7 +44,7 @@ body {
 
 a { color: var(--azul); }
 
-/* Faixa com as cores da bandeira */
+/* Cabeçalho */
 .topo {
   position: sticky;
   top: 0;
@@ -72,20 +59,28 @@ a { color: var(--azul); }
   top: 0;
   left: 0;
   right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--verde) 0 25%, var(--amarelo) 25% 50%, var(--azul) 50% 75%, var(--vermelho) 75% 100%);
+  height: 5px;
+  background: linear-gradient(90deg, var(--vermelho) 0 70%, var(--amarelo) 70% 85%, var(--verde) 85% 92%, var(--azul) 92% 100%);
+}
+
+.topo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .marca {
-  font-weight: 800;
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
-  color: var(--azul);
-  letter-spacing: 0.02em;
-  display: inline-block;
-  margin-top: 6px;
+  color: var(--texto);
 }
-.marca span { color: var(--vermelho); }
+.logo { width: 42px; height: 42px; flex-shrink: 0; }
+.nome { display: flex; flex-direction: column; line-height: 1.15; }
+.nome strong { color: var(--vermelho); font-size: 1.05rem; letter-spacing: 0.04em; }
+.nome small { color: var(--suave); font-size: 0.8rem; }
 
 .abas {
   display: flex;
@@ -112,12 +107,12 @@ a { color: var(--azul); }
   padding: 20px 16px 48px;
 }
 
-h1 { font-size: 1.6rem; margin: 0.4em 0 0.5em; color: var(--azul); }
-h2 { font-size: 1.25rem; margin: 1.4em 0 0.5em; color: var(--vermelho); }
+h1 { font-size: 1.6rem; margin: 0.4em 0 0.5em; color: var(--vermelho); }
+h2 { font-size: 1.25rem; margin: 1.4em 0 0.5em; color: var(--texto); border-bottom: 2px solid var(--amarelo); display: inline-block; padding-bottom: 2px; }
 h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
 
 .card {
-  background: var(--azul-claro);
+  background: var(--papel);
   border-radius: 12px;
   padding: 16px;
   margin: 12px 0;
@@ -127,7 +122,7 @@ h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
   border: 1px solid var(--borda);
 }
 
-/* Aviso de seção (Faculdade/Complementar) */
+/* Destaques por tema */
 .aviso-secao {
   background: var(--amarelo-claro);
   border: none;
@@ -135,7 +130,6 @@ h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
   color: var(--texto);
 }
 
-/* Macete de decoreba */
 .macete {
   background: var(--verde-claro);
   border-left: 5px solid var(--verde);
@@ -157,16 +151,18 @@ h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
   padding: 8px 14px;
   margin: 12px 0;
 }
+
 .etiqueta {
   display: inline-block;
   font-size: 0.75rem;
   padding: 2px 8px;
   border-radius: 999px;
-  background: var(--amarelo-claro);
-  color: var(--texto);
+  background: var(--azul-claro);
+  color: var(--azul);
   margin-bottom: 4px;
 }
 
+/* Botões e campos */
 button, .botao {
   font: inherit;
   padding: 8px 14px;
@@ -183,6 +179,11 @@ button.secundario, .botao.secundario {
   color: var(--azul);
   border-color: var(--azul);
 }
+button.tema {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
 
 input, select {
   font: inherit;
@@ -197,6 +198,7 @@ label { display: block; margin: 10px 0 4px; font-weight: 600; }
 
 .linha { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
 
+/* Listas */
 .lista-aulas { list-style: none; padding: 0; }
 .lista-aulas li {
   border: 1px solid var(--borda);
@@ -208,8 +210,9 @@ label { display: block; margin: 10px 0 4px; font-weight: 600; }
   justify-content: space-between;
   gap: 12px;
   align-items: center;
+  background: var(--papel);
 }
-.lista-aulas a { font-weight: 600; text-decoration: none; }
+.lista-aulas a { font-weight: 600; text-decoration: none; color: var(--texto); }
 
 .feito { color: var(--verde); font-weight: 700; }
 
@@ -231,7 +234,9 @@ label { display: block; margin: 10px 0 4px; font-weight: 600; }
 }
 .popover strong { display: block; margin-bottom: 4px; }
 
+/* Trilha */
 .trilha-dia {
+  background: var(--papel);
   border: 1px solid var(--borda);
   border-left: 5px solid var(--azul);
   border-radius: 10px;
@@ -264,4 +269,5 @@ label { display: block; margin: 10px 0 4px; font-weight: 600; }
 @media (max-width: 600px) {
   h1 { font-size: 1.35rem; }
   .lista-aulas li { flex-direction: column; align-items: flex-start; }
+  .logo { width: 34px; height: 34px; }
 }

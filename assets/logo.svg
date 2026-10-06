@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ARETA">
+  <!-- Símbolo ARETA: balança da justiça sobre fundo vermelho -->
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="#b1121b"/>
+  <circle cx="32" cy="14" r="4" fill="#f5b800"/>
+  <line x1="32" y1="18" x2="32" y2="50" stroke="#fbf6ea" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="12" y1="22" x2="52" y2="22" stroke="#fbf6ea" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="22" y1="54" x2="42" y2="54" stroke="#fbf6ea" stroke-width="4" stroke-linecap="round"/>
+  <path d="M12 22 L4 38 M12 22 L20 38" stroke="#fbf6ea" stroke-width="2" fill="none"/>
+  <path d="M4 38 H20 Q20 46 12 46 Q4 46 4 38 Z" fill="#fbf6ea"/>
+  <path d="M52 22 L44 38 M52 22 L60 38" stroke="#fbf6ea" stroke-width="2" fill="none"/>
+  <path d="M44 38 H60 Q60 46 52 46 Q44 46 44 38 Z" fill="#fbf6ea"/>
+</svg>

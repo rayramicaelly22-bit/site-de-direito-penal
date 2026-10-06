@@ -181,7 +181,8 @@ function fontesHtml(aula) {
 function telaInicio() {
   const feitas = aulasFeitas().filter((id) => FACULDADE().some((a) => a.id === id)).length;
   return `
-    <h1>Estudo Penal</h1>
+    <h1>ARETA CRIMINOLOGIS</h1>
+    <p class="suave">Estudo Penal para a atividade oral e para a prova.</p>
     <p>Site para estudar Direito Penal para a atividade oral e para a prova. Em cada aba você encontra:</p>
     <ul>
       <li><strong>Faculdade:</strong> o conteúdo dado pelo professor, com explicação simples, casos e perguntas.</li>
@@ -596,7 +597,40 @@ function rota() {
   return { aba: null, html: telaNaoEncontrada };
 }
 
+// Com a nuvem configurada, o site só abre depois de entrar (com ou sem e-mail).
+function precisaEntrar() {
+  return nuvemDisponivel() && nuvem.pronto && !nuvem.sessao;
+}
+
+function telaEntrada() {
+  return `
+    <h1>Bem-vindo ao Estudo Penal</h1>
+    <p>Antes de começar, escolha como quer entrar. Depois de entrar, você vai direto para o site.</p>
+    <div class="card">
+      <h3>Opção 1: sem e-mail</h3>
+      <p>Rápido e sem cadastro. O progresso fica salvo só neste navegador. Se limpar os dados do navegador, ele se perde.</p>
+    </div>
+    <div class="card">
+      <h3>Opção 2: com e-mail</h3>
+      <p>O progresso fica salvo na nuvem e aparece em outros aparelhos. Você usa e-mail e senha.</p>
+    </div>
+    ${blocoNuvem()}
+  `;
+}
+
 function render() {
+  if (precisaEntrar()) {
+    document.querySelectorAll(".abas a").forEach((a) => a.classList.remove("ativa"));
+    app.innerHTML = telaEntrada();
+    window.scrollTo(0, 0);
+    ligarEventos();
+    return;
+  }
+  if (nuvemDisponivel() && !nuvem.pronto) {
+    app.innerHTML = `<p class="suave">Carregando...</p>`;
+    return;
+  }
+
   const { aba, html } = rota();
   document.querySelectorAll(".abas a").forEach((a) => {
     a.classList.toggle("ativa", a.dataset.aba === aba);
@@ -785,7 +819,35 @@ window.addEventListener("hashchange", () => {
 });
 
 if (!location.hash) location.hash = "#/inicio";
-iniciarNuvem(() => {
-  if (location.hash.startsWith("#/progresso")) render();
+// Botão de tema claro/escuro. A escolha fica salva neste navegador.
+const btnTema = document.getElementById("btn-tema");
+function temaAtual() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+function atualizarBotaoTema() {
+  btnTema.textContent = temaAtual() === "dark" ? "Tema claro" : "Tema escuro";
+}
+btnTema.addEventListener("click", () => {
+  const novo = temaAtual() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", novo);
+  LS.set("areta-tema", novo);
+  atualizarBotaoTema();
 });
+atualizarBotaoTema();
+
+// Redesenha quando o login muda (entrou ou saiu) e na aba Progresso.
+let ultimoLogado = null;
+iniciarNuvem(() => {
+  const logado = Boolean(nuvem.sessao);
+  const mudou = logado !== ultimoLogado;
+  ultimoLogado = logado;
+  if (mudou || location.hash.startsWith("#/progresso")) render();
+});
+// Se a verificação de sessão demorar, libera o site depois de 5 segundos.
+setTimeout(() => {
+  if (!nuvem.pronto) {
+    nuvem.pronto = true;
+    render();
+  }
+}, 5000);
 render();

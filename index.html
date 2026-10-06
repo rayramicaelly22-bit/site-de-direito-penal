@@ -3,17 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Estudo Penal · Direito Penal</title>
+  <title>ARETA CRIMINOLOGIS · Estudo Penal</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <script>
+    // Aplica o tema salvo (ou o do aparelho) antes de desenhar a página, para não piscar.
+    try {
+      var tema = localStorage.getItem("areta-tema") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", tema);
+    } catch (e) {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  </script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="topo">
-    <a class="marca" href="#/inicio">Estudo <span>Penal</span></a>
+    <div class="topo-linha">
+      <a class="marca" href="#/inicio">
+        <img src="assets/logo.svg" alt="" class="logo">
+        <span class="nome">
+          <strong>ARETA CRIMINOLOGIS</strong>
+          <small>Estudo Penal</small>
+        </span>
+      </a>
+      <button class="secundario tema" id="btn-tema" aria-label="Alternar entre tema claro e escuro">Tema escuro</button>
+    </div>
     <nav class="abas" aria-label="Seções">
       <a href="#/inicio" data-aba="inicio">Início</a>
-      <a href="#/trilha" data-aba="trilha">Trilha</a>
       <a href="#/faculdade" data-aba="faculdade">Faculdade</a>
       <a href="#/complementar" data-aba="complementar">Complementar</a>
+      <a href="#/trilha" data-aba="trilha">Trilha</a>
       <a href="#/progresso" data-aba="progresso">Progresso</a>
       <a href="#/glossario" data-aba="glossario">Glossário</a>
       <a href="#/revisao" data-aba="revisao">Revisão</a>
@@ -26,7 +45,7 @@
   <div id="popover" class="popover" role="tooltip" hidden></div>
 
   <footer class="rodape">
-    Material de estudo. Confira sempre o texto atual do Código Penal, da Constituição e as decisões do STF/STJ no site oficial.
+    ARETA CRIMINOLOGIS · Material de estudo. Confira sempre o texto atual do Código Penal, da Constituição e as decisões do STF/STJ no site oficial.
   </footer>
 
   <script src="js/conteudo.js"></script>

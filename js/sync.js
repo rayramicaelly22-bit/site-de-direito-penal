@@ -5,6 +5,7 @@
 const nuvem = {
   cliente: null,
   sessao: null,
+  pronto: false,
   timer: null,
   erro: null,
   aoMudar: () => {}
@@ -20,6 +21,7 @@ function iniciarNuvem(aoMudar) {
   nuvem.cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   nuvem.cliente.auth.onAuthStateChange((evento, sessao) => {
     nuvem.sessao = sessao;
+    nuvem.pronto = true;
     if (sessao) sincronizarAgora();
     nuvem.aoMudar();
   });
