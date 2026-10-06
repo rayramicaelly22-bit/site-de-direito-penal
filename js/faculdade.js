@@ -253,7 +253,8 @@ const AULAS_FACULDADE = [
         titulo: "Prisão domiciliar (art. 318)",
         paragrafos: [
           "Não é uma nova espécie de prisão cautelar. Ela substitui a preventiva quando a pessoa se enquadra nas hipóteses do art. 318, como maior de 80 anos, extremamente debilitada por doença grave, gestante, mulher com filho de até 12 anos incompletos, ou homem que seja o único responsável por filho nessa idade.",
-          "Nas anotações, a hipótese de gestante aparece com a ressalva de que o crime não pode ter sido cometido com violência ou grave ameaça à pessoa nem contra filho ou dependente. Também há menção ao responsável por criança menor de 6 anos ou com deficiência. As hipóteses mudaram com leis recentes, então confira a redação atual do art. 318 antes de citar.",
+          "Redação atual do art. 318 (alterada pela Lei 13.257/2016): além de maior de 80 anos e de quem está extremamente debilitado por doença grave, a domiciliar vale para quem é imprescindível aos cuidados especiais de pessoa menor de 6 anos ou com deficiência; para a gestante; para a mulher com filho de até 12 anos incompletos; e para o homem que seja o único responsável por filho de até 12 anos incompletos.",
+          "Restrição da gestante e da mãe (art. 318-A): a substituição só vale se o crime não foi cometido com violência ou grave ameaça à pessoa, nem contra filho ou dependente.",
           "Diferença para a medida do art. 319: a domiciliar substitui a preventiva; o recolhimento domiciliar noturno é uma medida cautelar diversa, e as duas não se confundem."
         ]
       }
@@ -382,11 +383,11 @@ const AULAS_FACULDADE = [
         titulo: "Procedimentos especiais",
         paragrafos: [
           "Lei de Drogas (Lei 11.343/2006): tem fase de defesa preliminar antes do recebimento da denúncia.",
-          "Crimes dolosos contra a vida: seguem o rito do júri, em duas fases (judicium accusationis e judicium causae), com julgamento pelo Tribunal do Júri.",
-          "Crimes funcionais afiançáveis praticados por funcionário público: têm defesa preliminar antes do recebimento (arts. 513 a 518 do CPP, conforme as anotações; confira a numeração atual).",
+          "Crimes dolosos contra a vida: seguem o rito do júri (arts. 406 a 497 do CPP), em duas fases (judicium accusationis, para decidir se o caso vai a júri, e judicium causae, o julgamento pelo Conselho de Sentença).",
+          "Crimes funcionais afiançáveis praticados por funcionário público: têm defesa preliminar antes do recebimento da denúncia (arts. 513 a 518 do CPP).",
           "Processo nos tribunais (Lei 8.038/1990): aplicável a processos de competência originária dos tribunais superiores.",
           "Crimes de prefeito (Decreto-Lei 201/1967): processados pelo juiz de primeiro grau, com regras próprias.",
-          "Crimes contra a honra: têm rito próprio, previsto nos arts. 519 a 523 do CPP, conforme as anotações.",
+          "Crimes contra a honra (calúnia, difamação e injúria): têm rito próprio (arts. 519 a 523 do CPP). Antes de receber a queixa, o juiz tenta a conciliação entre as partes, ouvindo-as separadamente, sem advogados e sem registro. Se houver acordo, a queixa é retirada.",
           "Organizações criminosas (Lei 12.850/2013, art. 22): seguem o rito ordinário."
         ]
       },
@@ -395,7 +396,8 @@ const AULAS_FACULDADE = [
         paragrafos: [
           "Nos crimes praticados com violência doméstica e familiar contra a mulher, não se aplica a Lei 9.099/1995, independentemente da pena (art. 41 da Lei 11.340/2006).",
           "Na prática, isso significa que não há rito sumaríssimo, nem transação penal (art. 76), nem suspensão condicional do processo (art. 89), nem termo circunstanciado: o caso segue o procedimento comum, e mesmo com pena baixa a prisão preventiva pode ser cabível, dentro dos requisitos.",
-          "Nas anotações, também aparece a mesma regra para crimes contra criança, adolescente e idoso, citando o ECA e o Estatuto do Idoso. Confira os artigos específicos de cada lei antes de citar na prova."
+          "Crimes contra criança e adolescente: o ECA (art. 226, §1º) afasta a Lei 9.099/1995, independentemente da pena. Aplicam-se as normas gerais do Código Penal e do Código de Processo Penal.",
+          "Crimes contra a pessoa idosa: o Estatuto da Pessoa Idosa (art. 94, parágrafo único) também afasta a Lei 9.099/1995, independentemente da pena, quando o crime é previsto nesse estatuto ou é praticado com violência contra a pessoa idosa."
         ]
       }
     ],
