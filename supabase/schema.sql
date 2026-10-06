@@ -21,3 +21,17 @@ create policy "atualizar o proprio progresso"
   on public.progresso for update
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- Apaga a própria conta (e o progresso, por causa do cascade).
+-- Só quem está logado consegue chamar, e só apaga a si mesmo.
+create or replace function public.apagar_minha_conta()
+returns void
+language sql
+security definer
+set search_path = ''
+as $$
+  delete from auth.users where id = auth.uid();
+$$;
+
+revoke all on function public.apagar_minha_conta() from public;
+grant execute on function public.apagar_minha_conta() to authenticated;

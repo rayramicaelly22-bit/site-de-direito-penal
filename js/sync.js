@@ -69,6 +69,29 @@ async function sairNuvem() {
   if (nuvem.cliente) await nuvem.cliente.auth.signOut();
 }
 
+// Entra sem e-mail: o progresso fica ligado a este navegador.
+async function entrarAnonimo() {
+  if (!nuvem.cliente) return "Sincronização não configurada.";
+  const { error } = await nuvem.cliente.auth.signInAnonymously();
+  return error ? `Não foi possível entrar sem e-mail: ${error.message}` : null;
+}
+
+// Transforma a conta anônima em conta com e-mail, sem perder o progresso.
+async function vincularEmail(email, senha) {
+  if (!nuvem.cliente) return "Sincronização não configurada.";
+  const { error } = await nuvem.cliente.auth.updateUser({ email, password: senha });
+  return error ? `Não foi possível salvar o e-mail: ${error.message}` : "Confira seu e-mail para confirmar. Seu progresso continua o mesmo.";
+}
+
+// Apaga a conta e todos os dados do progresso (função apagar_minha_conta no banco).
+async function apagarConta() {
+  if (!nuvem.cliente) return "Sincronização não configurada.";
+  const { error } = await nuvem.cliente.rpc("apagar_minha_conta");
+  if (error) return `Não foi possível apagar a conta: ${error.message}`;
+  await nuvem.cliente.auth.signOut();
+  return null;
+}
+
 // Baixa o progresso da nuvem, mescla com o local e envia de volta.
 async function sincronizarAgora() {
   if (!nuvem.cliente || !nuvem.sessao) return "Entre na sua conta para sincronizar.";

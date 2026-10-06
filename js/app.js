@@ -88,28 +88,48 @@ function blocoNuvem() {
   if (!nuvemDisponivel()) {
     return `<div class="card borda"><strong>Sincronização:</strong> ainda não configurada. Por enquanto, o progresso fica só neste navegador.</div>`;
   }
+
+  const aviso = `
+    <p class="suave"><strong>Privacidade:</strong> o progresso na nuvem fica ligado à sua conta. Se usar e-mail, ele é guardado só para login e recuperação de senha, e é visível para quem administra o site. Você pode apagar a conta e todos os dados quando quiser, no botão "Apagar minha conta".</p>`;
+
+  const campos = `
+      <label for="nuvem-email">E-mail</label>
+      <input type="email" id="nuvem-email" autocomplete="email">
+      <label for="nuvem-senha">Senha</label>
+      <input type="password" id="nuvem-senha" autocomplete="new-password">`;
+
   if (nuvem.sessao) {
+    const anonimo = Boolean(nuvem.sessao.user.is_anonymous);
     return `
       <div class="card">
-        <p><strong>Conectado como:</strong> ${esc(nuvem.sessao.user.email)}. O progresso é salvo na nuvem.</p>
-        <div class="linha">
+        <p><strong>Conectado como:</strong> ${anonimo ? "modo sem e-mail" : esc(nuvem.sessao.user.email)}.</p>
+        ${anonimo ? `
+          <p class="aviso">No modo sem e-mail, o progresso fica só neste navegador. Se limpar os dados do navegador, ele se perde. Para não perder, salve um e-mail:</p>
+          ${campos}
+          <div class="linha" style="margin-top: 12px;"><button id="btn-vincular">Salvar com e-mail</button></div>` : ""}
+        ${aviso}
+        <div class="linha" style="margin-top: 12px;">
           <button id="btn-sincronizar">Sincronizar agora</button>
           <button class="secundario" id="btn-sair">Sair</button>
+          <button class="secundario" id="btn-apagar">Apagar minha conta</button>
         </div>
         <p id="msg-nuvem" class="suave"></p>
       </div>`;
   }
+
   return `
     <div class="card">
-      <p>Entre para salvar seu progresso na nuvem e usar em outro aparelho.</p>
-      <label for="nuvem-email">E-mail</label>
-      <input type="email" id="nuvem-email" autocomplete="email">
-      <label for="nuvem-senha">Senha</label>
-      <input type="password" id="nuvem-senha" autocomplete="current-password">
+      <p>Entre para salvar seu progresso na nuvem e usar em outro aparelho. Escolha uma opção:</p>
+      <div class="linha">
+        <button id="btn-anonimo">Entrar sem e-mail</button>
+      </div>
+      <p class="suave">Ou entre com e-mail:</p>
+      ${campos}
       <div class="linha" style="margin-top: 12px;">
         <button id="btn-entrar">Entrar</button>
         <button class="secundario" id="btn-criar">Criar conta</button>
       </div>
+      ${aviso}
       <p id="msg-nuvem" class="suave"></p>
     </div>`;
 }
@@ -662,10 +682,43 @@ function ligarEventos() {
     });
   }
 
+  const btnAnonimo = document.getElementById("btn-anonimo");
+  if (btnAnonimo) {
+    btnAnonimo.addEventListener("click", async () => {
+      const erro = await entrarAnonimo();
+      msgNuvem().textContent = erro || "Entrou sem e-mail. Progresso sincronizado.";
+    });
+  }
+
+  const btnVincular = document.getElementById("btn-vincular");
+  if (btnVincular) {
+    btnVincular.addEventListener("click", async () => {
+      const texto = await vincularEmail(document.getElementById("nuvem-email").value, document.getElementById("nuvem-senha").value);
+      msgNuvem().textContent = texto;
+    });
+  }
+
   const btnSair = document.getElementById("btn-sair");
   if (btnSair) {
     btnSair.addEventListener("click", async () => {
+      const anonimo = Boolean(nuvem.sessao && nuvem.sessao.user.is_anonymous);
+      if (anonimo && !confirm("Você está sem e-mail. Ao sair, não será possível voltar a este progresso. Deseja sair mesmo assim?")) return;
       await sairNuvem();
+      render();
+    });
+  }
+
+  const btnApagar = document.getElementById("btn-apagar");
+  if (btnApagar) {
+    btnApagar.addEventListener("click", async () => {
+      if (!confirm("Apagar a conta e todo o progresso salvo na nuvem? Esta ação não pode ser desfeita. O progresso deste navegador também será apagado.")) return;
+      const erro = await apagarConta();
+      if (erro) {
+        msgNuvem().textContent = erro;
+        return;
+      }
+      LS.set(PROG_KEY, progressoVazio());
+      LS.set("areta-trilha", null);
       render();
     });
   }
