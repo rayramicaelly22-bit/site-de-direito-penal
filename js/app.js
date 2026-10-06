@@ -910,6 +910,7 @@ function telaEntrada() {
         <input type="email" id="nuvem-email" autocomplete="email">
         <label for="nuvem-senha">Senha</label>
         <input type="password" id="nuvem-senha" autocomplete="current-password">
+        <p class="suave pequeno">Para criar conta, a senha precisa ter pelo menos 6 caracteres.</p>
         <div class="linha" style="margin-top: 12px;">
           <button id="btn-entrar">Entrar</button>
           <button class="secundario" id="btn-criar">Criar conta</button>
@@ -1104,8 +1105,24 @@ function ligarEventos() {
   const btnCriar = document.getElementById("btn-criar");
   if (btnCriar) {
     btnCriar.addEventListener("click", async () => {
-      const texto = await criarContaNuvem(document.getElementById("nuvem-email").value, document.getElementById("nuvem-senha").value);
-      msgNuvem().textContent = texto;
+      const email = document.getElementById("nuvem-email").value.trim();
+      const senha = document.getElementById("nuvem-senha").value;
+      const el = msgNuvem();
+      if (!email || !senha) {
+        el.textContent = "Preencha o e-mail e a senha para criar a conta.";
+        el.className = "aviso";
+        return;
+      }
+      if (senha.length < 6) {
+        el.textContent = "A senha precisa ter pelo menos 6 caracteres.";
+        el.className = "aviso";
+        return;
+      }
+      el.textContent = "Criando conta...";
+      el.className = "suave";
+      const texto = await criarContaNuvem(email, senha);
+      el.textContent = texto;
+      el.className = texto.startsWith("Não") ? "aviso" : "sucesso";
     });
   }
 
