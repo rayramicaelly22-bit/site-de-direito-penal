@@ -1090,7 +1090,8 @@ function ligarEventos() {
     });
   });
 
-  const msgNuvem = () => document.getElementById("msg-nuvem");
+  // Se a mensagem não estiver na tela, o texto é descartado em vez de gerar erro.
+  const msgNuvem = () => document.getElementById("msg-nuvem") || { textContent: "" };
 
   const btnEntrar = document.getElementById("btn-entrar");
   if (btnEntrar) {
@@ -1174,7 +1175,7 @@ function ligarEventos() {
       if (!confirm("Apagar a conta e todo o progresso salvo na nuvem? Esta ação não pode ser desfeita. O progresso deste aparelho também será apagado.")) return;
       const erro = await apagarConta();
       if (erro) {
-        document.getElementById("msg-menu").textContent = erro;
+        (document.getElementById("msg-menu") || { textContent: "" }).textContent = erro;
         return;
       }
       LS.set(PROG_KEY, progressoVazio());
