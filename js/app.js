@@ -205,7 +205,8 @@ function telaInicio() {
 }
 
 function telaTrilha() {
-  const salvo = LS.get("areta-trilha", { inicio: hojeTexto(), fim: "2026-10-26", horas: 2 });
+  // Se não há trilha salva (ou ela foi apagada), usa valores padrão.
+  const salvo = LS.get("areta-trilha", null) || { inicio: hojeTexto(), fim: "2026-10-26", horas: 2 };
   return `
     <h1>Trilha de estudo</h1>
     <p>Preencha o início, a data da atividade oral e quantas horas por dia você pode estudar. A trilha usa só o conteúdo da <strong>Faculdade</strong>.</p>
