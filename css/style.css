@@ -1,0 +1,209 @@
+:root {
+  --fundo: #faf8f4;
+  --texto: #1f2328;
+  --suave: #5b6470;
+  --destaque: #6b3fa0;
+  --destaque-claro: #efe8f7;
+  --borda: #e2dccf;
+  --ok: #2e7d4f;
+  --alerta: #b5471e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fundo: #17181c;
+    --texto: #ececf1;
+    --suave: #a3a8b3;
+    --destaque: #b893e6;
+    --destaque-claro: #2a2435;
+    --borda: #33363f;
+    --ok: #6cc38f;
+    --alerta: #f08a5d;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: var(--destaque); }
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--fundo);
+  border-bottom: 1px solid var(--borda);
+  padding: 12px 16px 0;
+}
+
+.marca {
+  font-weight: 800;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--texto);
+  letter-spacing: 0.04em;
+}
+.marca span { color: var(--destaque); }
+
+.abas {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  margin-top: 8px;
+}
+.abas a {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--suave);
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+}
+.abas a.ativa {
+  color: var(--destaque);
+  border-bottom-color: var(--destaque);
+  font-weight: 600;
+}
+
+.conteudo {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
+}
+
+h1 { font-size: 1.6rem; margin: 0.4em 0 0.5em; }
+h2 { font-size: 1.25rem; margin: 1.4em 0 0.5em; }
+h3 { font-size: 1.05rem; margin: 1em 0 0.4em; }
+
+.card {
+  background: var(--destaque-claro);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.card.borda {
+  background: transparent;
+  border: 1px solid var(--borda);
+}
+
+.caixa-crianca {
+  border-left: 4px solid var(--ok);
+  padding: 8px 14px;
+  margin: 12px 0;
+  background: var(--fundo);
+}
+
+.caso {
+  border-left: 4px solid var(--destaque);
+  padding: 8px 14px;
+  margin: 12px 0;
+}
+.etiqueta {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--borda);
+  color: var(--suave);
+  margin-bottom: 4px;
+}
+
+button, .botao {
+  font: inherit;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--destaque);
+  background: var(--destaque);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+button.secundario, .botao.secundario {
+  background: transparent;
+  color: var(--destaque);
+}
+
+input, select {
+  font: inherit;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  background: var(--fundo);
+  color: var(--texto);
+}
+
+label { display: block; margin: 10px 0 4px; font-weight: 600; }
+
+.linha { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+
+.lista-aulas { list-style: none; padding: 0; }
+.lista-aulas li {
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.lista-aulas a { font-weight: 600; text-decoration: none; }
+
+.feito { color: var(--ok); font-weight: 600; }
+
+.termo {
+  border-bottom: 1px dotted var(--destaque);
+  cursor: help;
+}
+
+.popover {
+  position: fixed;
+  z-index: 20;
+  max-width: 320px;
+  background: var(--texto);
+  color: var(--fundo);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.popover strong { display: block; margin-bottom: 4px; }
+
+.trilha-dia {
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 8px 0;
+}
+.trilha-dia.revisao { border-style: dashed; }
+.trilha-dia.oral { border-color: var(--alerta); }
+.trilha-dia ul { margin: 6px 0 0; padding-left: 20px; }
+
+.resposta { display: none; margin-top: 10px; }
+.resposta.aberta { display: block; }
+
+.aviso {
+  color: var(--alerta);
+  font-weight: 600;
+}
+
+.rodape {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 16px;
+  font-size: 0.85rem;
+  color: var(--suave);
+  border-top: 1px solid var(--borda);
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.35rem; }
+  .lista-aulas li { flex-direction: column; align-items: flex-start; }
+}
