@@ -220,7 +220,7 @@ function mostrarTrilha() {
 
   area.innerHTML = `
     <p>Total de estudo: ${totalHoras}h em ${resultado.dias.length} dias.</p>
-    <p><strong>Dias concluídos:</strong> ${concluidos} de ${diasEstudo.length}. Marque cada dia quando terminar; o progresso fica salvo.</p>
+    <p id="contador-dias"><strong>Dias concluídos:</strong> ${concluidos} de ${diasEstudo.length}. Marque cada dia quando terminar; o progresso fica salvo.</p>
     ${aviso}
     ${reduzidas}
     ${blocos}
@@ -621,6 +621,13 @@ document.addEventListener("change", (evento) => {
   p.dias[caixa.dataset.dia] = caixa.checked;
   registrar(p, caixa.checked ? "concluiu o dia da trilha" : "desmarcou o dia da trilha", caixa.dataset.dia);
   salvarProgresso(p);
+
+  const contador = document.getElementById("contador-dias");
+  if (contador) {
+    const total = document.querySelectorAll("[data-dia]").length;
+    const feitos = document.querySelectorAll("[data-dia]:checked").length;
+    contador.innerHTML = `<strong>Dias concluídos:</strong> ${feitos} de ${total}. Marque cada dia quando terminar; o progresso fica salvo.`;
+  }
 });
 
 // Popover do glossário: clicar no termo mostra a explicação.
