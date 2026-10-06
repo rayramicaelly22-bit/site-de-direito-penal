@@ -1,5 +1,5 @@
 // Configuração do Supabase (login e progresso na nuvem).
-// A chave "anon" é pública por natureza: a segurança vem das regras RLS do banco.
-// Enquanto estiverem vazias, o site funciona só com o progresso deste navegador.
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+// A chave pública (publishable) pode ficar no código: a segurança vem das regras RLS do banco.
+// Nunca coloque aqui a chave "service_role" ou a senha do banco.
+const SUPABASE_URL = "https://tmyqxdytbudhiowktnxc.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_gwiRxf5qP889Oxj8bdsT_w_6BRBRyC9";
