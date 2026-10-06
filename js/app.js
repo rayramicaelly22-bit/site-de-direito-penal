@@ -20,6 +20,14 @@ const LS = {
   }
 };
 
+const AVISOS = {
+  faculdade: "Conteúdo da faculdade, baseado nas anotações das aulas. Ao estudar, confira a lei atual e as fontes indicadas.",
+  complementar: "Conteúdo complementar: não foi dado pelo professor. Serve para entender o básico, mas não substitui a matéria da aula. Confira as fontes indicadas."
+};
+
+const FACULDADE = () => AULAS.filter((a) => a.secao === "faculdade");
+const COMPLEMENTAR_AULAS = () => AULAS.filter((a) => a.secao === "complementar");
+
 function esc(texto) {
   return String(texto)
     .replace(/&/g, "&amp;")
@@ -61,6 +69,20 @@ function alternarFeita(id) {
   LS.set("areta-feitas", feitas);
 }
 
+function bloco(secao) {
+  return `<div class="card borda aviso-secao"><strong>Aviso:</strong> ${esc(AVISOS[secao])}</div>`;
+}
+
+function fontesHtml(aula) {
+  const chaves = FONTES[aula.id] || [];
+  if (chaves.length === 0) return "";
+  const itens = chaves.map((k) => `<li><a href="${esc(LINKS[k].url)}" target="_blank" rel="noopener">${esc(LINKS[k].nome)}</a></li>`).join("");
+  return `
+    <h2>Fontes para consultar</h2>
+    <ul>${itens}</ul>
+  `;
+}
+
 // ---------- Telas ----------
 
 function telaInicio() {
@@ -69,10 +91,11 @@ function telaInicio() {
     <h1>ARETA Mens Rea</h1>
     <p>Site para estudar Direito Penal para a atividade oral e para a prova. Em cada aba você encontra:</p>
     <ul>
-      <li><strong>Trilha:</strong> informe a data de início e a data da atividade oral, e o site monta o seu plano de estudo.</li>
-      <li><strong>Aulas:</strong> cada conteúdo separado, com explicação simples, versão “explicando para uma criança”, casos e perguntas.</li>
-      <li><strong>Glossário:</strong> clique em uma palavra destacada no texto para ver o significado.</li>
-      <li><strong>Revisão:</strong> perguntas subjetivas de todas as aulas, com modelo de resposta.</li>
+      <li><strong>Faculdade:</strong> o conteúdo dado pelo professor, com explicação simples, casos e perguntas.</li>
+      <li><strong>Complementar:</strong> conteúdo de apoio que não foi dado em aula, para entender o básico.</li>
+      <li><strong>Trilha:</strong> informe a data de início e a data da atividade oral, e o site monta o seu plano com base na Faculdade.</li>
+      <li><strong>Glossário:</strong> clique em palavras destacadas no texto para ver o significado.</li>
+      <li><strong>Revisão:</strong> perguntas subjetivas da Faculdade, com modelo de resposta.</li>
       <li><strong>Ensaio oral:</strong> perguntas sorteadas para treinar a resposta em voz alta.</li>
     </ul>
     <div class="card">
@@ -80,7 +103,7 @@ function telaInicio() {
     </div>
     <div class="linha">
       <a class="botao" href="#/trilha">Montar minha trilha</a>
-      <a class="botao secundario" href="#/aulas">Ver aulas</a>
+      <a class="botao secundario" href="#/faculdade">Ver conteúdo da faculdade</a>
     </div>
   `;
 }
@@ -89,7 +112,7 @@ function telaTrilha() {
   const salvo = LS.get("areta-trilha", { inicio: hojeTexto(), fim: "2026-10-26", horas: 2 });
   return `
     <h1>Trilha de estudo</h1>
-    <p>Preencha o início, a data da atividade oral e quantas horas por dia você pode estudar. O plano usa as aulas em ordem e marca dias de revisão.</p>
+    <p>Preencha o início, a data da atividade oral e quantas horas por dia você pode estudar. A trilha usa só o conteúdo da <strong>Faculdade</strong>.</p>
     <div class="card borda">
       <div class="linha">
         <div>
@@ -117,7 +140,7 @@ function mostrarTrilha() {
   const horas = Number(document.getElementById("f-horas").value);
   LS.set("areta-trilha", { inicio, fim, horas });
 
-  const resultado = gerarTrilha(inicio, fim, horas, AULAS);
+  const resultado = gerarTrilha(inicio, fim, horas, FACULDADE());
   const area = document.getElementById("resultado");
   if (resultado.erro) {
     area.innerHTML = `<p class="aviso">${esc(resultado.erro)}</p>`;
@@ -156,9 +179,9 @@ function mostrarTrilha() {
   `;
 }
 
-function telaAulas() {
+function listaAulas(lista) {
   const feitas = aulasFeitas();
-  const itens = AULAS.map((aula) => `
+  return lista.map((aula) => `
     <li>
       <div>
         <a href="#/aulas/${aula.id}">${esc(aula.titulo)}</a>
@@ -166,20 +189,33 @@ function telaAulas() {
       </div>
       ${feitas.includes(aula.id) ? '<span class="feito">Estudada</span>' : ""}
     </li>`).join("");
+}
+
+function telaFaculdade() {
   return `
-    <h1>Aulas</h1>
-    <p>Cada conteúdo é uma aula separada. A ordem segue a trilha.</p>
-    <ul class="lista-aulas">${itens}</ul>
+    <h1>Faculdade</h1>
+    ${bloco("faculdade")}
+    <p>Conteúdo dado pelo professor, em ordem de aula.</p>
+    <ul class="lista-aulas">${listaAulas(FACULDADE())}</ul>
+  `;
+}
+
+function telaComplementar() {
+  return `
+    <h1>Complementar</h1>
+    ${bloco("complementar")}
+    <ul class="lista-aulas">${listaAulas(COMPLEMENTAR_AULAS())}</ul>
   `;
 }
 
 function telaAula(id) {
-  const indice = AULAS.findIndex((a) => a.id === id);
-  if (indice < 0) return telaNaoEncontrada();
-  const aula = AULAS[indice];
+  const aula = AULAS.find((a) => a.id === id);
+  if (!aula) return telaNaoEncontrada();
+  const lista = aula.secao === "faculdade" ? FACULDADE() : COMPLEMENTAR_AULAS();
+  const indice = lista.findIndex((a) => a.id === aula.id);
   const feita = aulasFeitas().includes(aula.id);
-  const anterior = AULAS[indice - 1];
-  const proxima = AULAS[indice + 1];
+  const anterior = lista[indice - 1];
+  const proxima = lista[indice + 1];
 
   const secoes = aula.secoes.map((secao) => `
     <h2>${esc(secao.titulo)}</h2>
@@ -211,8 +247,10 @@ function telaAula(id) {
       </details>
     </div>`).join("");
 
+  const rotaBase = aula.secao === "faculdade" ? "#/faculdade" : "#/complementar";
   return `
-    <p class="suave">Aula ${indice + 1} de ${AULAS.length} · ${aula.horas}h</p>
+    ${bloco(aula.secao)}
+    <p class="suave"><a href="${rotaBase}">← ${aula.secao === "faculdade" ? "Faculdade" : "Complementar"}</a> · Aula ${indice + 1} de ${lista.length} · ${aula.horas}h</p>
     <h1>${esc(aula.titulo)}</h1>
     <div class="card">${marcar(aula.resumo)}</div>
 
@@ -237,6 +275,8 @@ function telaAula(id) {
     <h2>Perguntas para treinar a resposta oral</h2>
     ${questoes}
 
+    ${fontesHtml(aula)}
+
     <div class="linha" style="justify-content: space-between; margin-top: 24px;">
       ${anterior ? `<a class="botao secundario" href="#/aulas/${anterior.id}">← ${esc(anterior.titulo)}</a>` : "<span></span>"}
       ${proxima ? `<a class="botao secundario" href="#/aulas/${proxima.id}">${esc(proxima.titulo)} →</a>` : "<span></span>"}
@@ -249,7 +289,7 @@ function telaJurisprudencia(chave) {
   if (!j) return telaNaoEncontrada();
   const aulasQueCitam = AULAS.filter((a) => a.juris.some((x) => x.chave === chave));
   return `
-    <p class="suave"><a href="#/aulas">← Aulas</a></p>
+    <p class="suave"><a href="#/faculdade">← Faculdade</a></p>
     <span class="etiqueta">${esc(j.tipo)}</span>
     <h1>${esc(j.titulo)}</h1>
     <div class="card">
@@ -288,7 +328,7 @@ function telaGlossario() {
 }
 
 function telaRevisao() {
-  const blocos = AULAS.map((aula) => `
+  const blocos = FACULDADE().map((aula) => `
     <h2>${esc(aula.titulo)}</h2>
     ${aula.questoes.map((q, i) => `
       <div class="card borda">
@@ -301,14 +341,15 @@ function telaRevisao() {
   `).join("");
   return `
     <h1>Revisão</h1>
-    <p>Perguntas subjetivas de todas as aulas. Responda em voz alta antes de abrir o modelo.</p>
+    ${bloco("faculdade")}
+    <p>Perguntas subjetivas da Faculdade. Responda em voz alta antes de abrir o modelo.</p>
     ${blocos}
   `;
 }
 
 let ultimaEnsaio = -1;
 function sortearEnsaio() {
-  const todas = AULAS.flatMap((aula) => aula.questoes.map((q) => ({ ...q, aula: aula.titulo })));
+  const todas = FACULDADE().flatMap((aula) => aula.questoes.map((q) => ({ ...q, aula: aula.titulo })));
   if (todas.length === 0) return null;
   let indice;
   do {
@@ -323,6 +364,7 @@ function telaEnsaio() {
   if (!q) return "<p>Ainda não há perguntas cadastradas.</p>";
   return `
     <h1>Ensaio oral</h1>
+    ${bloco("faculdade")}
     <p>Responda em voz alta, como na atividade. Depois compare com o modelo.</p>
     <div class="card">
       <p class="suave">${esc(q.aula)}</p>
@@ -347,12 +389,17 @@ function rota() {
   const [aba, ...resto] = partes;
   if (!aba || aba === "inicio") return { aba: "inicio", html: telaInicio };
   if (aba === "trilha") return { aba, html: telaTrilha };
-  if (aba === "aulas" && resto.length === 0) return { aba, html: telaAulas };
-  if (aba === "aulas") return { aba, html: () => telaAula(resto[0]) };
+  if (aba === "faculdade") return { aba, html: telaFaculdade };
+  if (aba === "complementar") return { aba, html: telaComplementar };
+  if (aba === "aulas" && resto.length) {
+    const aula = AULAS.find((a) => a.id === resto[0]);
+    const secao = aula ? aula.secao : null;
+    return { aba: secao, html: () => telaAula(resto[0]) };
+  }
   if (aba === "glossario") return { aba, html: () => telaGlossario() };
   if (aba === "revisao") return { aba, html: telaRevisao };
   if (aba === "ensaio") return { aba, html: telaEnsaio };
-  if (aba === "jurisprudencia") return { aba: "aulas", html: () => telaJurisprudencia(resto[0]) };
+  if (aba === "jurisprudencia") return { aba: "faculdade", html: () => telaJurisprudencia(resto[0]) };
   return { aba: null, html: telaNaoEncontrada };
 }
 

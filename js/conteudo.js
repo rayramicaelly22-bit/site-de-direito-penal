@@ -38,6 +38,47 @@ const JURIS = {
   }
 };
 
+// Links de consulta. Sempre que um conteúdo for mostrado, o site indica onde conferir.
+const LINKS = {
+  cf: { nome: "Constituição Federal (Planalto)", url: "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm" },
+  cp: { nome: "Código Penal (Planalto)", url: "https://www.planalto.gov.br/ccivil_03/decreto-lei/del2848compilado.htm" },
+  cpp: { nome: "Código de Processo Penal (Planalto)", url: "https://www.planalto.gov.br/ccivil_03/decreto-lei/del3689compilado.htm" },
+  l9099: { nome: "Lei 9.099/1995 (Juizados Especiais)", url: "https://www.planalto.gov.br/ccivil_03/leis/l9099.htm" },
+  l11340: { nome: "Lei 11.340/2006 (Maria da Penha)", url: "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11340.htm" },
+  l11343: { nome: "Lei 11.343/2006 (Lei de Drogas)", url: "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11343.htm" },
+  l12850: { nome: "Lei 12.850/2013 (Organizações Criminosas)", url: "https://www.planalto.gov.br/ccivil_03/_ato2013-2014/2013/lei/l12850.htm" },
+  l13869: { nome: "Lei 13.869/2019 (Abuso de Autoridade)", url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/lei/l13869.htm" },
+  lc80: { nome: "LC 80/1994 (Defensoria Pública)", url: "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp80.htm" },
+  ctb: { nome: "Código de Trânsito Brasileiro (Planalto)", url: "https://www.planalto.gov.br/ccivil_03/leis/l9503compilado.htm" },
+  stf: { nome: "Portal do STF (súmulas e jurisprudência)", url: "https://portal.stf.jus.br/" },
+  stj: { nome: "Portal do STJ", url: "https://www.stj.jus.br/" },
+  cnj: { nome: "Conselho Nacional de Justiça", url: "https://www.cnj.jus.br/" }
+};
+
+// Fontes de consulta por aula (chaves de LINKS).
+const FONTES = {
+  "aula-01": ["cf", "cp"],
+  "aula-02": ["cp"],
+  "aula-03": ["cp"],
+  "aula-04": ["cp"],
+  "aula-05": ["cp", "cf"],
+  "aula-06": ["cp"],
+  "aula-07": ["cp", "stf"],
+  "aula-08": ["cpp", "cf", "cp", "stf"],
+  "aula-09": ["cf", "cpp", "l13869", "cnj", "stf"],
+  "aula-10": ["cpp", "l9099", "l12850", "ctb", "stf"],
+  "aula-11": ["cpp", "cf", "stj"],
+  "aula-12": ["cpp", "lc80", "cf"],
+  "aula-13": ["cpp", "l9099", "l11340", "l11343", "l12850"],
+  "aula-14": ["cpp", "l9099", "lc80"],
+  "aula-15": ["cpp", "cp"],
+  "aula-16": ["cpp", "l11343", "lc80"],
+  "aula-17": ["cpp", "l9099"]
+};
+
+// Seção de cada aula: "complementar" = não foi dada pelo professor; o resto é "faculdade".
+const COMPLEMENTAR = ["aula-01", "aula-02", "aula-03", "aula-04", "aula-05", "aula-06", "aula-07"];
+
 const AULAS = [
   {
     id: "aula-01",
@@ -822,3 +863,7 @@ const AULAS = [
     ]
   }
 ];
+
+AULAS.forEach((aula) => {
+  aula.secao = COMPLEMENTAR.includes(aula.id) ? "complementar" : "faculdade";
+});
