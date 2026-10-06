@@ -122,6 +122,18 @@ h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
   border: 1px solid var(--borda);
 }
 
+/* Tela de login (sem cabeçalho nem abas) */
+body.entrada-ativa .topo,
+body.entrada-ativa .rodape { display: none; }
+.entrada { max-width: 380px; margin: 48px auto 0; text-align: center; }
+.logo-grande { width: 96px; height: 96px; }
+.entrada h1 { margin-bottom: 0; }
+.entrada-form { text-align: left; margin-top: 20px; }
+.entrada-form button { width: 100%; }
+.entrada-form .linha button { width: auto; flex: 1; }
+.pequeno { font-size: 0.85rem; }
+.centro { text-align: center; }
+
 /* Alternativas do teste de nível */
 .opcao { display: block; font-weight: 400; margin: 6px 0; cursor: pointer; }
 .opcao input { width: auto; margin-right: 6px; }

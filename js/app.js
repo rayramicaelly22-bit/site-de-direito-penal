@@ -742,23 +742,35 @@ function precisaEntrar() {
   return nuvemDisponivel() && nuvem.pronto && !nuvem.sessao;
 }
 
+// Tela de login: só a logo e o formulário. Os botões usam os mesmos ids de blocoNuvem.
 function telaEntrada() {
   return `
-    <h1>Bem-vindo ao Estudo Penal</h1>
-    <p>Antes de começar, escolha como quer entrar. Depois de entrar, você vai direto para o site.</p>
-    <div class="card">
-      <h3>Opção 1: sem e-mail</h3>
-      <p>Rápido e sem cadastro. O progresso fica salvo só neste navegador. Se limpar os dados do navegador, ele se perde.</p>
+    <div class="entrada">
+      <img src="assets/logo.svg" alt="" class="logo-grande">
+      <h1>ARETA CRIMINALIS</h1>
+      <p class="suave">Estudo Penal</p>
+      <div class="card entrada-form">
+        <button id="btn-anonimo">Entrar sem e-mail</button>
+        <p class="suave pequeno">Rápido. O progresso fica só neste aparelho.</p>
+        <p class="suave centro">ou entre com e-mail</p>
+        <label for="nuvem-email">E-mail</label>
+        <input type="email" id="nuvem-email" autocomplete="email">
+        <label for="nuvem-senha">Senha</label>
+        <input type="password" id="nuvem-senha" autocomplete="current-password">
+        <div class="linha" style="margin-top: 12px;">
+          <button id="btn-entrar">Entrar</button>
+          <button class="secundario" id="btn-criar">Criar conta</button>
+        </div>
+        <p class="suave pequeno">Com e-mail, o progresso fica salvo na nuvem e aparece em outros aparelhos. O e-mail serve só para login e recuperação de senha.</p>
+        <p id="msg-nuvem" class="suave"></p>
+      </div>
     </div>
-    <div class="card">
-      <h3>Opção 2: com e-mail</h3>
-      <p>O progresso fica salvo na nuvem e aparece em outros aparelhos. Você usa e-mail e senha.</p>
-    </div>
-    ${blocoNuvem()}
   `;
 }
 
 function render() {
+  // Sem login, a página mostra só a tela de entrada (sem abas nem rodapé).
+  document.body.classList.toggle("entrada-ativa", precisaEntrar() || (nuvemDisponivel() && !nuvem.pronto));
   if (precisaEntrar()) {
     document.querySelectorAll(".abas a").forEach((a) => a.classList.remove("ativa"));
     app.innerHTML = telaEntrada();
