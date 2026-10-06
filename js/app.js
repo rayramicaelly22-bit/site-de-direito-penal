@@ -57,16 +57,57 @@ function formatarData(data) {
   return data.toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long" });
 }
 
+// Progresso salvo neste navegador: aulas estudadas, dias da trilha concluídos e histórico.
+const PROG_KEY = "areta-progresso";
+
+function progressoVazio() {
+  return { aulas: {}, dias: {}, historico: [], migrado: false };
+}
+
+function lerProgresso() {
+  const p = LS.get(PROG_KEY, progressoVazio());
+  if (!p.migrado) {
+    // Migra o formato antigo (lista de aulas estudadas), se existir.
+    const antigas = LS.get("areta-feitas", []);
+    antigas.forEach((id) => {
+      p.aulas[id] = { estudada: true, data: new Date().toISOString() };
+    });
+    p.migrado = true;
+    LS.set(PROG_KEY, p);
+  }
+  return p;
+}
+
+function salvarProgresso(p) {
+  LS.set(PROG_KEY, p);
+}
+
+function registrar(p, acao, aulaId) {
+  p.historico.unshift({ quando: new Date().toISOString(), acao, aula: aulaId });
+  p.historico = p.historico.slice(0, 200);
+}
+
 function aulasFeitas() {
-  return LS.get("areta-feitas", []);
+  const p = lerProgresso();
+  return Object.keys(p.aulas).filter((id) => p.aulas[id].estudada);
 }
 
 function alternarFeita(id) {
-  const feitas = aulasFeitas();
-  const pos = feitas.indexOf(id);
-  if (pos >= 0) feitas.splice(pos, 1);
-  else feitas.push(id);
-  LS.set("areta-feitas", feitas);
+  const p = lerProgresso();
+  const estudada = Boolean(p.aulas[id] && p.aulas[id].estudada);
+  p.aulas[id] = { estudada: !estudada, data: new Date().toISOString() };
+  registrar(p, estudada ? "desmarcou como estudada" : "marcou como estudada", id);
+  salvarProgresso(p);
+}
+
+function chaveData(data) {
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const dia = String(data.getDate()).padStart(2, "0");
+  return `${data.getFullYear()}-${mes}-${dia}`;
+}
+
+function formatarQuando(iso) {
+  return new Date(iso).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
 }
 
 function bloco(secao) {
@@ -86,7 +127,7 @@ function fontesHtml(aula) {
 // ---------- Telas ----------
 
 function telaInicio() {
-  const feitas = aulasFeitas().length;
+  const feitas = aulasFeitas().filter((id) => FACULDADE().some((a) => a.id === id)).length;
   return `
     <h1>ARETA Mens Rea</h1>
     <p>Site para estudar Direito Penal para a atividade oral e para a prova. Em cada aba você encontra:</p>
@@ -99,7 +140,8 @@ function telaInicio() {
       <li><strong>Ensaio oral:</strong> perguntas sorteadas para treinar a resposta em voz alta.</li>
     </ul>
     <div class="card">
-      <strong>Seu progresso:</strong> ${feitas} de ${AULAS.length} aulas marcadas como estudadas.
+      <strong>Seu progresso:</strong> ${feitas} de ${FACULDADE().length} aulas da Faculdade marcadas como estudadas.
+      <a href="#/progresso">Ver progresso e histórico</a>
     </div>
     <div class="linha">
       <a class="botao" href="#/trilha">Montar minha trilha</a>
@@ -159,6 +201,7 @@ function mostrarTrilha() {
     return `
       <div class="trilha-dia ${dia.tipo}">
         <strong>${esc(formatarData(dia.data))}</strong> · ${rotulos[dia.tipo]}${dia.horas ? ` · ${dia.horas}h` : ""}
+        ${dia.tipo !== "oral" ? `<label class="concluido"><input type="checkbox" data-dia="${chaveData(dia.data)}" ${lerProgresso().dias[chaveData(dia.data)] ? "checked" : ""}> Dia concluído</label>` : ""}
         <ul>${itens}</ul>
       </div>`;
   }).join("");
@@ -171,8 +214,13 @@ function mostrarTrilha() {
     ? `<p>Para caber no período, estas aulas foram reduzidas: ${resultado.reduzidas.map((r) => `${esc(r.titulo)} (${esc(r.modo)})`).join("; ")}.</p>`
     : `<p>Todas as aulas serão estudadas por completo.</p>`;
 
+  const diasEstudo = resultado.dias.filter((d) => d.tipo !== "oral");
+  const progresso = lerProgresso();
+  const concluidos = diasEstudo.filter((d) => progresso.dias[chaveData(d.data)]).length;
+
   area.innerHTML = `
     <p>Total de estudo: ${totalHoras}h em ${resultado.dias.length} dias.</p>
+    <p><strong>Dias concluídos:</strong> ${concluidos} de ${diasEstudo.length}. Marque cada dia quando terminar; o progresso fica salvo.</p>
     ${aviso}
     ${reduzidas}
     ${blocos}
@@ -378,6 +426,96 @@ function telaEnsaio() {
   `;
 }
 
+function telaProgresso() {
+  const p = lerProgresso();
+  const feitas = aulasFeitas();
+  const faculdade = FACULDADE();
+  const estudadas = faculdade.filter((a) => feitas.includes(a.id)).length;
+  const trilha = LS.get("areta-trilha", null);
+  const diasConcluidos = Object.values(p.dias).filter(Boolean).length;
+
+  const linhas = faculdade.map((aula) => {
+    const feita = feitas.includes(aula.id);
+    const registro = p.aulas[aula.id];
+    return `
+      <li>
+        <div>
+          <a href="#/aulas/${aula.id}">${esc(aula.titulo)}</a>
+          <div class="suave">${feita ? `Estudada em ${esc(formatarQuando(registro.data))}` : "Ainda não estudada"}</div>
+        </div>
+        <button class="secundario btn-status" data-aula="${aula.id}">${feita ? "Desmarcar" : "Marcar como estudada"}</button>
+      </li>`;
+  }).join("");
+
+  const historico = p.historico.length
+    ? p.historico.slice(0, 30).map((h) => {
+      const aula = AULAS.find((a) => a.id === h.aula);
+      return `<li>${esc(formatarQuando(h.quando))} · ${esc(h.acao)}: ${esc(aula ? aula.titulo : h.aula)}</li>`;
+    }).join("")
+    : "<li>Nenhuma atividade registrada ainda.</li>";
+
+  const trilhaSalva = trilha && trilha.inicio && trilha.fim
+    ? `<p>Trilha salva: de ${esc(trilha.inicio)} até ${esc(trilha.fim)}, ${esc(trilha.horas)}h por dia. <a href="#/trilha">Abrir trilha</a></p>`
+    : `<p>Nenhuma trilha salva ainda. <a href="#/trilha">Montar trilha</a></p>`;
+
+  return `
+    <h1>Progresso</h1>
+    <p>Seu progresso fica salvo neste navegador. Para usar em outro aparelho, exporte o arquivo e importe lá.</p>
+    <div class="card">
+      <p><strong>Aulas estudadas:</strong> ${estudadas} de ${faculdade.length} (Faculdade)</p>
+      <p><strong>Dias da trilha concluídos:</strong> ${diasConcluidos}</p>
+      ${trilhaSalva}
+    </div>
+
+    <h2>Aulas da Faculdade</h2>
+    <ul class="lista-aulas">${linhas}</ul>
+
+    <h2>Backup</h2>
+    <div class="linha">
+      <button class="secundario" id="btn-exportar">Exportar progresso</button>
+      <label class="botao secundario" for="arquivo-importar">Importar progresso</label>
+      <input type="file" id="arquivo-importar" accept="application/json" hidden>
+    </div>
+    <p id="msg-backup" class="suave"></p>
+
+    <h2>Histórico</h2>
+    <ul>${historico}</ul>
+  `;
+}
+
+function exportarProgresso() {
+  const conteudo = JSON.stringify({ progresso: lerProgresso(), trilha: LS.get("areta-trilha", null) }, null, 2);
+  const blob = new Blob([conteudo], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "areta-progresso.json";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function importarProgresso(arquivo) {
+  const leitor = new FileReader();
+  leitor.onload = () => {
+    const msg = document.getElementById("msg-backup");
+    try {
+      const dados = JSON.parse(leitor.result);
+      if (!dados.progresso || typeof dados.progresso.aulas !== "object") {
+        throw new Error("formato inválido");
+      }
+      salvarProgresso({ ...progressoVazio(), ...dados.progresso, migrado: true });
+      if (dados.trilha) LS.set("areta-trilha", dados.trilha);
+      msg.textContent = "Progresso importado.";
+      render();
+    } catch (erro) {
+      msg.textContent = "Não foi possível importar: o arquivo não tem o formato do ARETA.";
+    }
+  };
+  leitor.readAsText(arquivo);
+}
+
 function telaNaoEncontrada() {
   return `<h1>Página não encontrada</h1><p><a href="#/inicio">Voltar ao início</a></p>`;
 }
@@ -391,6 +529,7 @@ function rota() {
   if (aba === "trilha") return { aba, html: telaTrilha };
   if (aba === "faculdade") return { aba, html: telaFaculdade };
   if (aba === "complementar") return { aba, html: telaComplementar };
+  if (aba === "progresso") return { aba, html: telaProgresso };
   if (aba === "aulas" && resto.length) {
     const aula = AULAS.find((a) => a.id === resto[0]);
     const secao = aula ? aula.secao : null;
@@ -455,7 +594,34 @@ function ligarEventos() {
 
   const btnOutra = document.getElementById("btn-outra");
   if (btnOutra) btnOutra.addEventListener("click", render);
+
+  document.querySelectorAll(".btn-status").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      alternarFeita(botao.dataset.aula);
+      render();
+    });
+  });
+
+  const btnExportar = document.getElementById("btn-exportar");
+  if (btnExportar) btnExportar.addEventListener("click", exportarProgresso);
+
+  const arquivo = document.getElementById("arquivo-importar");
+  if (arquivo) {
+    arquivo.addEventListener("change", () => {
+      if (arquivo.files[0]) importarProgresso(arquivo.files[0]);
+    });
+  }
 }
+
+// Marcar um dia da trilha como concluído (salvo no progresso).
+document.addEventListener("change", (evento) => {
+  const caixa = evento.target.closest("[data-dia]");
+  if (!caixa) return;
+  const p = lerProgresso();
+  p.dias[caixa.dataset.dia] = caixa.checked;
+  registrar(p, caixa.checked ? "concluiu o dia da trilha" : "desmarcou o dia da trilha", caixa.dataset.dia);
+  salvarProgresso(p);
+});
 
 // Popover do glossário: clicar no termo mostra a explicação.
 function mostrarPopover(alvo) {
