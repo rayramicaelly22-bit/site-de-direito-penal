@@ -129,7 +129,7 @@ function mostrarTrilha() {
   const blocos = resultado.dias.map((dia) => {
     const itens = dia.itens.map((item) => {
       if (item.aulaId) {
-        return `<li><a href="#/aulas/${item.aulaId}">${esc(item.titulo)}</a> (${item.horas}h)</li>`;
+        return `<li><a href="#/aulas/${item.aulaId}">${esc(item.titulo)}</a> · ${esc(item.modo)} (${Number(item.horas.toFixed(2))}h)</li>`;
       }
       return `<li>${esc(item.titulo)}</li>`;
     }).join("");
@@ -144,9 +144,14 @@ function mostrarTrilha() {
     ? `<p class="aviso">Não coube no período: ${esc(resultado.faltam.join(", "))}. Aumente as horas por dia ou a data.</p>`
     : "";
 
+  const reduzidas = resultado.reduzidas.length
+    ? `<p>Para caber no período, estas aulas foram reduzidas: ${resultado.reduzidas.map((r) => `${esc(r.titulo)} (${esc(r.modo)})`).join("; ")}.</p>`
+    : `<p>Todas as aulas serão estudadas por completo.</p>`;
+
   area.innerHTML = `
     <p>Total de estudo: ${totalHoras}h em ${resultado.dias.length} dias.</p>
     ${aviso}
+    ${reduzidas}
     ${blocos}
   `;
 }
