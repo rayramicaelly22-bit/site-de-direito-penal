@@ -881,3 +881,19 @@ const AULAS = [
 AULAS.forEach((aula) => {
   aula.secao = COMPLEMENTAR.includes(aula.id) ? "complementar" : "faculdade";
 });
+
+// Perguntas do teste de nível (só conteúdo da Faculdade). "correta" é a posição da alternativa certa.
+const NIVEL = [
+  { aula: "aula-14", pergunta: "Qual é o prazo para a resposta à acusação no procedimento comum ordinário?", alternativas: ["5 dias", "10 dias", "15 dias", "20 dias"], correta: 1 },
+  { aula: "aula-11", pergunta: "Em qual hipótese a prisão preventiva é cabível, segundo o art. 313 do CPP?", alternativas: ["Crime culposo com pena de 1 ano", "Crime doloso com pena máxima superior a 4 anos", "Contravenção penal", "Qualquer crime, sem exceção"], correta: 1 },
+  { aula: "aula-10", pergunta: "Quem acaba de cometer a infração, sendo preso logo depois, está em qual tipo de flagrante?", alternativas: ["Próprio", "Impróprio", "Presumido", "Esperado"], correta: 0 },
+  { aula: "aula-17", pergunta: "Qual recurso cabe contra a decisão que rejeita a denúncia?", alternativas: ["Apelação", "RESE", "Embargos de declaração", "Agravo"], correta: 1 },
+  { aula: "aula-09", pergunta: "O que a Súmula Vinculante 11 do STF trata?", alternativas: ["Fiança", "Uso de algemas", "Audiência de custódia", "Prisão civil"], correta: 1 },
+  { aula: "aula-09", pergunta: "Em quanto tempo o preso deve passar pela audiência de custódia?", alternativas: ["Em até 24 horas", "Em até 48 horas", "Em até 72 horas", "Em até 5 dias"], correta: 0 },
+  { aula: "aula-12", pergunta: "Qual destes crimes NÃO admite fiança?", alternativas: ["Furto simples", "Tráfico de drogas", "Lesão corporal leve", "Ameaça"], correta: 1 },
+  { aula: "aula-10", pergunta: "Se a polícia prepara o flagrante e, por isso, o crime não se consuma, o que acontece?", alternativas: ["Crime consumado", "Crime impossível, não há crime (Súmula 145)", "Tentativa punível", "Prisão preventiva"], correta: 1 },
+  { aula: "aula-16", pergunta: "Qual é o prazo da Defensoria Pública para apresentar a resposta à acusação?", alternativas: ["10 dias", "20 dias", "15 dias", "30 dias"], correta: 1 },
+  { aula: "aula-13", pergunta: "O procedimento comum ordinário é aplicado a crimes com pena máxima:", alternativas: ["Inferior a 4 anos", "Igual ou superior a 4 anos", "Superior a 10 anos", "Inferior a 2 anos"], correta: 1 },
+  { aula: "aula-16", pergunta: "Quantas testemunhas o acusado pode arrolar no procedimento comum ordinário?", alternativas: ["3", "5", "8", "10"], correta: 2 },
+  { aula: "aula-15", pergunta: "No crime de ameaça (art. 147 do CP), a ação penal depende de:", alternativas: ["Requisição do Ministro da Justiça", "Representação da vítima", "Ação penal privada exclusiva", "Nada, é ação penal pública incondicionada"], correta: 1 }
+];

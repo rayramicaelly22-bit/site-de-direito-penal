@@ -181,7 +181,7 @@ function fontesHtml(aula) {
 function telaInicio() {
   const feitas = aulasFeitas().filter((id) => FACULDADE().some((a) => a.id === id)).length;
   return `
-    <h1>ARETA CRIMINOLOGIS</h1>
+    <h1>ARETA CRIMINALIS</h1>
     <p class="suave">Estudo Penal para a atividade oral e para a prova.</p>
     <p>Site para estudar Direito Penal para a atividade oral e para a prova. Em cada aba você encontra:</p>
     <ul>
@@ -198,6 +198,7 @@ function telaInicio() {
     </div>
     <div class="linha">
       <a class="botao" href="#/trilha">Montar minha trilha</a>
+      <a class="botao secundario" href="#/nivel">Descubra seu nível</a>
       <a class="botao secundario" href="#/faculdade">Ver conteúdo da faculdade</a>
     </div>
   `;
@@ -496,7 +497,7 @@ function resultadoComparacao(resposta, modelo) {
     <div class="card">
       <h3>Comparação</h3>
       <p><strong>${percentual}%</strong> dos pontos principais apareceram na sua resposta. ${mensagem}</p>
-      <p class="suave">A comparação é automática, por palavras-chave. Leia a resposta certa para entender o raciocínio completo.</p>
+      <p class="suave">A comparação é automática, por palavras-chave. Uma resposta correta com outras palavras pode aparecer com nota baixa. Leia a resposta certa para entender o raciocínio completo.</p>
       <div class="linha" style="align-items: stretch;">
         <div class="card borda" style="flex: 1 1 280px;">
           <h3>O que você respondeu</h3>
@@ -530,6 +531,10 @@ function telaEnsaio() {
     <h1>Ensaio oral</h1>
     ${bloco("faculdade")}
     <p>Responda em voz alta, como na atividade. Depois compare com o modelo.</p>
+    <div class="card borda">
+      <strong>Sobre a comparação:</strong>
+      <p>A comparação é automática, por palavras-chave. Ela não entende o sentido da resposta. Uma resposta correta com outras palavras pode aparecer com nota baixa, então leia a resposta certa para entender o raciocínio. Também pode aparecer muita palavra na lista "faltou citar", porque a lista usa todas as palavras longas da resposta certa.</p>
+    </div>
     <div class="card">
       <p class="suave">${esc(q.aula)}</p>
       <h2 style="margin-top: 0">${esc(q.pergunta)}</h2>
@@ -637,6 +642,74 @@ function importarProgresso(arquivo) {
   leitor.readAsText(arquivo);
 }
 
+// ---------- Teste de nível ----------
+
+let nivelEstado = { fase: "inicio", perguntas: [], respostas: [] };
+
+function embaralhar(lista) {
+  return [...lista].sort(() => Math.random() - 0.5);
+}
+
+function comecarNivel() {
+  nivelEstado = { fase: "quiz", perguntas: embaralhar(NIVEL).slice(0, 10), respostas: [] };
+}
+
+// Mensagem de meme conforme o número de acertos (de 0 a 10).
+function memeNivel(acertos) {
+  if (acertos <= 2) return "Meu Deus, ainda bem que você é só estudante: dá tempo de aprender!";
+  if (acertos <= 4) return "Calma, todo mundo começa assim. Respira e vai para a próxima aula.";
+  if (acertos <= 6) return "Meio caminho andado. Agora é só revisar o que você errou.";
+  if (acertos <= 8) return "Já está com cara de quem vai arrasar na banca.";
+  if (acertos === 9) return "Quase perfeito! Só faltou um detalhe, e a banca não vai pegar.";
+  return "Traz a OAB que esse já tá formado!";
+}
+
+function telaNivel() {
+  if (nivelEstado.fase === "quiz") {
+    const cards = nivelEstado.perguntas.map((q, i) => `
+      <div class="card borda">
+        <strong>${i + 1}. ${esc(q.pergunta)}</strong>
+        <div style="margin-top: 8px;">
+          ${q.alternativas.map((alt, j) => `
+            <label class="opcao"><input type="radio" name="nivel-${i}" value="${j}"> ${esc(alt)}</label>`).join("")}
+        </div>
+      </div>`).join("");
+    return `
+      <h1>Teste de nível</h1>
+      ${bloco("faculdade")}
+      <p>Responda sem consultar. Não é nota: é para ver onde você está.</p>
+      ${cards}
+      <button id="btn-nivel-ver">Ver meu nível</button>`;
+  }
+
+  if (nivelEstado.fase === "resultado") {
+    const acertos = nivelEstado.respostas.filter((r) => r.acertou).length;
+    const total = nivelEstado.perguntas.length;
+    LS.set("areta-nivel", { acertos, total, data: new Date().toISOString() });
+    const erros = nivelEstado.respostas.filter((r) => !r.acertou).map((r) => {
+      const aula = AULAS.find((a) => a.id === r.aula);
+      const marcada = r.escolhida === null ? "nada" : r.alternativas[r.escolhida];
+      return `<li><strong>${esc(r.pergunta)}</strong><br>Você marcou: ${esc(marcada)}<br>Resposta certa: ${esc(r.alternativas[r.correta])}${aula ? ` · <a href="#/aulas/${aula.id}">Estudar: ${esc(aula.titulo)}</a>` : ""}</li>`;
+    }).join("");
+    return `
+      <h1>Seu nível: ${acertos}/${total}</h1>
+      <div class="card"><p style="font-size: 1.15rem;"><strong>${esc(memeNivel(acertos))}</strong></p></div>
+      ${erros ? `<h2>O que revisar</h2><ul>${erros}</ul>` : "<p>Você acertou tudo!</p>"}
+      <div class="linha">
+        <button id="btn-nivel-refazer">Refazer teste</button>
+        <a class="botao secundario" href="#/inicio">Voltar ao início</a>
+      </div>`;
+  }
+
+  const ultimo = LS.get("areta-nivel", null);
+  return `
+    <h1>Descubra seu nível</h1>
+    ${bloco("faculdade")}
+    <p>São 10 perguntas sobre o que o professor passou. Responda para ver quanto você já sabe.</p>
+    ${ultimo ? `<p>Seu último resultado: <strong>${ultimo.acertos}/${ultimo.total}</strong>.</p>` : ""}
+    <button id="btn-nivel-comecar">Começar teste</button>`;
+}
+
 function telaNaoEncontrada() {
   return `<h1>Página não encontrada</h1><p><a href="#/inicio">Voltar ao início</a></p>`;
 }
@@ -651,6 +724,7 @@ function rota() {
   if (aba === "faculdade") return { aba, html: telaFaculdade };
   if (aba === "complementar") return { aba, html: telaComplementar };
   if (aba === "progresso") return { aba, html: telaProgresso };
+  if (aba === "nivel") return { aba: null, html: telaNivel };
   if (aba === "aulas" && resto.length) {
     const aula = AULAS.find((a) => a.id === resto[0]);
     const secao = aula ? aula.secao : null;
@@ -748,6 +822,42 @@ function ligarEventos() {
 
   const btnOutra = document.getElementById("btn-outra");
   if (btnOutra) btnOutra.addEventListener("click", render);
+
+  const btnNivelComecar = document.getElementById("btn-nivel-comecar");
+  if (btnNivelComecar) {
+    btnNivelComecar.addEventListener("click", () => {
+      comecarNivel();
+      render();
+    });
+  }
+
+  const btnNivelVer = document.getElementById("btn-nivel-ver");
+  if (btnNivelVer) {
+    btnNivelVer.addEventListener("click", () => {
+      nivelEstado.respostas = nivelEstado.perguntas.map((q, i) => {
+        const marcada = document.querySelector(`input[name="nivel-${i}"]:checked`);
+        const escolhida = marcada ? Number(marcada.value) : null;
+        return {
+          pergunta: q.pergunta,
+          alternativas: q.alternativas,
+          correta: q.correta,
+          escolhida,
+          acertou: escolhida === q.correta,
+          aula: q.aula
+        };
+      });
+      nivelEstado.fase = "resultado";
+      render();
+    });
+  }
+
+  const btnNivelRefazer = document.getElementById("btn-nivel-refazer");
+  if (btnNivelRefazer) {
+    btnNivelRefazer.addEventListener("click", () => {
+      comecarNivel();
+      render();
+    });
+  }
 
   const btnComparar = document.getElementById("btn-comparar");
   if (btnComparar && ensaioAtual) {

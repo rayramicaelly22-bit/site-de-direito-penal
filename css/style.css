@@ -122,6 +122,10 @@ h3 { font-size: 1.05rem; margin: 1em 0 0.4em; color: var(--azul); }
   border: 1px solid var(--borda);
 }
 
+/* Alternativas do teste de nível */
+.opcao { display: block; font-weight: 400; margin: 6px 0; cursor: pointer; }
+.opcao input { width: auto; margin-right: 6px; }
+
 /* Destaques por tema */
 .aviso-secao {
   background: var(--amarelo-claro);
