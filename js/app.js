@@ -896,7 +896,42 @@ function precisaEntrar() {
 }
 
 // Tela de login: só a logo e o formulário. Os botões usam os mesmos ids de blocoNuvem.
+// Estado da tela de entrada: "login" ou "criar". A mensagem fica guardada para sobreviver a redesenhos.
+let entradaModo = "login";
+let mensagemEntrada = null;
+
 function telaEntrada() {
+  return entradaModo === "criar" ? telaCriarConta() : telaEntradaLogin();
+}
+
+// Tela de criação de conta: a pessoa preenche tudo e só entra depois de confirmar o e-mail.
+function telaCriarConta() {
+  const msg = mensagemEntrada ? `<p class="${mensagemEntrada.tipo}">${esc(mensagemEntrada.texto)}</p>` : "";
+  return `
+    <div class="entrada">
+      <img src="assets/logo.svg" alt="" class="logo-grande">
+      <h1>Criar conta</h1>
+      <div class="card entrada-form">
+        <label for="novo-email">E-mail</label>
+        <input type="email" id="novo-email" autocomplete="email">
+        <label for="novo-senha">Senha</label>
+        <input type="password" id="novo-senha" autocomplete="new-password">
+        <p class="suave pequeno">Mínimo de 6 caracteres.</p>
+        <label for="novo-senha2">Repita a senha</label>
+        <input type="password" id="novo-senha2" autocomplete="new-password">
+        <div class="linha" style="margin-top: 12px;">
+          <button id="btn-criar-confirmar">Criar conta</button>
+        </div>
+        <p class="suave pequeno">Depois de criar, você recebe um e-mail para confirmar. Só depois de confirmar você consegue entrar.</p>
+        <div class="linha" style="margin-top: 12px;">
+          <button class="secundario" id="btn-voltar-login">Já tenho conta: voltar para entrar</button>
+        </div>
+        ${msg}
+      </div>
+    </div>`;
+}
+
+function telaEntradaLogin() {
   return `
     <div class="entrada">
       <img src="assets/logo.svg" alt="" class="logo-grande">
@@ -1104,25 +1139,54 @@ function ligarEventos() {
 
   const btnCriar = document.getElementById("btn-criar");
   if (btnCriar) {
-    btnCriar.addEventListener("click", async () => {
-      const email = document.getElementById("nuvem-email").value.trim();
-      const senha = document.getElementById("nuvem-senha").value;
-      const el = msgNuvem();
+    btnCriar.addEventListener("click", () => {
+      entradaModo = "criar";
+      mensagemEntrada = null;
+      render();
+    });
+  }
+
+  const btnVoltarLogin = document.getElementById("btn-voltar-login");
+  if (btnVoltarLogin) {
+    btnVoltarLogin.addEventListener("click", () => {
+      entradaModo = "login";
+      mensagemEntrada = null;
+      render();
+    });
+  }
+
+  const btnCriarConfirmar = document.getElementById("btn-criar-confirmar");
+  if (btnCriarConfirmar) {
+    btnCriarConfirmar.addEventListener("click", async () => {
+      const email = document.getElementById("novo-email").value.trim();
+      const senha = document.getElementById("novo-senha").value;
+      const senha2 = document.getElementById("novo-senha2").value;
       if (!email || !senha) {
-        el.textContent = "Preencha o e-mail e a senha para criar a conta.";
-        el.className = "aviso";
-        return;
+        mensagemEntrada = { texto: "Preencha o e-mail e a senha.", tipo: "aviso" };
+        return render();
       }
       if (senha.length < 6) {
-        el.textContent = "A senha precisa ter pelo menos 6 caracteres.";
-        el.className = "aviso";
-        return;
+        mensagemEntrada = { texto: "A senha precisa ter pelo menos 6 caracteres.", tipo: "aviso" };
+        return render();
       }
-      el.textContent = "Criando conta...";
-      el.className = "suave";
-      const texto = await criarContaNuvem(email, senha);
-      el.textContent = texto;
-      el.className = texto.startsWith("Não") ? "aviso" : "sucesso";
+      if (senha !== senha2) {
+        mensagemEntrada = { texto: "As senhas não são iguais.", tipo: "aviso" };
+        return render();
+      }
+
+      mensagemEntrada = { texto: "Criando conta...", tipo: "suave" };
+      render();
+
+      // Quem entrou sem e-mail transforma a conta atual; senão, cria uma conta nova.
+      const texto = nuvem.sessao && nuvem.sessao.user.is_anonymous
+        ? await vincularEmail(email, senha)
+        : await criarContaNuvem(email, senha);
+      const erro = texto.startsWith("Não");
+      mensagemEntrada = { texto: erro ? texto : "Conta criada. Confirme pelo link que enviamos ao seu e-mail e depois volte para entrar.", tipo: erro ? "aviso" : "sucesso" };
+
+      // A pessoa só entra depois de confirmar o e-mail: encerra qualquer sessão aberta.
+      await sairNuvem();
+      render();
     });
   }
 
