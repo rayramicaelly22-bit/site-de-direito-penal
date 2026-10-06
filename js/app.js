@@ -811,6 +811,7 @@ function telaNivel() {
       <div class="linha">
         <button id="btn-nivel-comecar">Fazer o teste</button>
         <button class="secundario" id="btn-nivel-pular">Pular por enquanto</button>
+        <a class="botao secundario" href="#/trilha">Montar minha trilha</a>
       </div>`;
   }
   return `
